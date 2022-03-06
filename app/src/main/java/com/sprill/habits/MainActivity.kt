@@ -52,4 +52,6 @@ class MainActivity : AppCompatActivity() {
     fun setAdapter(){
         binding.recycler.adapter = Adapter(habits, this, resultLauncher)
     }
+
+    //Test
 }

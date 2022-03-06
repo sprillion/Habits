@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Привычки</string>
+    <string name="create_activity">Новая привычка</string>
+    <string name="edit_activity">Редактирование привычки</string>
+    <string-array name="priorities">
+        <item>Высокий</item>
+        <item>Средний</item>
+        <item>Низкий</item>
+    </string-array>
+    <string name="radioButtonFirst">Домашняя</string>
+    <string name="radioButtonSecond">Рабочая</string>
+    <string name="radioButtonThird">Повседневня</string>
+</resources>

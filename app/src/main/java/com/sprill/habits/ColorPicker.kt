@@ -35,14 +35,13 @@ class ColorPicker(context: Context, attrs: AttributeSet): LinearLayout (context,
         val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         layoutParams = params
 
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(context)
         binding = ViewColorPickerBinding.inflate(inflater, this)
 
         setGradient()
         fillItems()
 
         invalidate()
-
     }
 
     private fun fillItems(){

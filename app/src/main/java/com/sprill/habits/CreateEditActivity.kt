@@ -34,7 +34,7 @@ class CreateEditActivity : AppCompatActivity() {
         if (intent == null) return
         isNew = intent.getBooleanExtra(MainActivity.BUNDLE_KEY_IS_NEW, true)
         if (!isNew) {
-            habit = intent.getSerializableExtra(MainActivity.BUNDLE_KEY_HABITS) as ItemHabit
+            habit = intent.getSerializableExtra(MainActivity.BUNDLE_KEY_HABIT) as ItemHabit
             id = intent.getIntExtra(MainActivity.BUNDLE_KEY_ID, 0)
             fill(habit)
         }
@@ -70,7 +70,7 @@ class CreateEditActivity : AppCompatActivity() {
 
     private fun openMainActivity(habit: ItemHabit){
         val intent = Intent(this, MainActivity::class.java).apply {
-           putExtra(MainActivity.BUNDLE_KEY_HABITS, habit)
+           putExtra(MainActivity.BUNDLE_KEY_HABIT, habit)
            if (!isNew) putExtra(MainActivity.BUNDLE_KEY_ID, id)
         }
         setResult(Activity.RESULT_OK, intent)

@@ -8,18 +8,49 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.sprill.habits.databinding.ActivityMainBinding
+import com.sprill.habits.databinding.FragmentHabitsListBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CallBack {
 
     companion object {
-        const val BUNDLE_KEY_HABITS = "habits"
+        const val BUNDLE_KEY_HABIT = "habit"
         const val BUNDLE_KEY_ID = "id"
         const val BUNDLE_KEY_IS_NEW = "isNew"
+        var habits: ArrayList<ItemHabit> = arrayListOf()
     }
 
-    private var habits: ArrayList<ItemHabit> = arrayListOf()
-    private lateinit var binding: ActivityMainBinding
 
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var habitsListFragment: HabitsListFragment
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        if (savedInstanceState == null){
+            habitsListFragment = HabitsListFragment.newInstance()
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_layout, habitsListFragment)
+                    .commit()
+        }
+    }
+
+    override fun onFragmentViewCreated(itemHabit: ItemHabit, idItem: Int, fragment: CreateEditFragment){
+        if (idItem > -1) habits[idItem] = itemHabit
+        else habits.add(itemHabit)
+
+        supportFragmentManager
+            .beginTransaction()
+            .remove(fragment)
+            .commit()
+        supportFragmentManager
+            .beginTransaction()
+            .show(habitsListFragment)
+            .commit()
+    }
+
+/*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -53,5 +84,6 @@ class MainActivity : AppCompatActivity() {
         binding.recycler.adapter = Adapter(habits, this, resultLauncher)
     }
 
-    //Test
+ */
+
 }

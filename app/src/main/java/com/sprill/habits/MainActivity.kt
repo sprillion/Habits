@@ -2,9 +2,7 @@ package com.sprill.habits
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.sprill.habits.databinding.ActivityMainBinding
@@ -30,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setAdapter()
     }
 
-    val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val id = result.data!!.getIntExtra(BUNDLE_KEY_ID, -1)
             val habit = result.data?.getSerializableExtra(BUNDLE_KEY_HABITS) as ItemHabit
@@ -42,14 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openCreateActivityForResult() {
+    private fun openCreateActivityForResult() {
         val intent = Intent(this, CreateEditActivity::class.java).apply {
             putExtra(BUNDLE_KEY_IS_NEW, true)
         }
         resultLauncher.launch(intent)
     }
 
-    fun setAdapter(){
+    private fun setAdapter(){
         binding.recycler.adapter = Adapter(habits, this, resultLauncher)
     }
 }

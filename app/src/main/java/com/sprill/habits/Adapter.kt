@@ -1,12 +1,10 @@
 package com.sprill.habits
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import com.sprill.habits.databinding.ItemHabitBinding
 
@@ -20,12 +18,12 @@ class Adapter(private val habits: ArrayList<ItemHabit>, private val context: Con
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(habits[position], context)
-        holder.itemView.setOnClickListener(){
+        holder.itemView.setOnClickListener{
             openEditActivityForResult(position)
         }
     }
 
-    fun openEditActivityForResult(id: Int) {
+    private fun openEditActivityForResult(id: Int) {
         val intent = Intent(context, CreateEditActivity::class.java).apply {
             putExtra(MainActivity.BUNDLE_KEY_HABITS, habits[id])
             putExtra(MainActivity.BUNDLE_KEY_ID, id)

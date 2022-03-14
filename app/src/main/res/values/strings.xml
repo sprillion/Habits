@@ -1,15 +1,47 @@
 <resources>
+    <!-- Именя для title -->
     <string name="app_name">Привычки</string>
-    <string name="create_activity">Новая привычка</string>
-    <string name="edit_activity">Редактирование привычки</string>
+    <string name="create_screen_title">Новая привычка</string>
+    <string name="edit_screen_title">Редактирование привычки</string>
+    <string name="about_app_screen_title">O приложении</string>
+
+    <!-- Для карточек-->
     <string-array name="priorities">
         <item>Высокий</item>
         <item>Средний</item>
         <item>Низкий</item>
     </string-array>
-    <string name="radioButtonFirst">Домашняя</string>
-    <string name="radioButtonSecond">Рабочая</string>
-    <string name="radioButtonThird">Повседневня</string>
+
+    <string name="good_radio_button">Полезная</string>
+    <string name="bad_radio_button">Вредная</string>
+
+    <string name="priority_word">Приоритет: </string>
+    <string name="type_word">Тип: </string>
+    <string name="type_havent">не выбран</string>
+    <string name="period_word">Периодичность: </string>
+
+    <!-- Создание/редактирование привычек. Заполнение полей -->
+    <string name="name_create_edit_fragment">Название</string>
+    <string name="description_create_edit_fragment">Описание</string>
+    <string name="priority_create_edit_fragment">Приоритет</string>
+    <string name="type_create_edit_fragment">Тип привычки</string>
+    <string name="count_create_edit_fragment">Количество выполнений</string>
+    <string name="period_create_edit_fragment">Периодичность выполнений</string>
+    <string name="color_word_create_edit_fragment">Цвет</string>
+    <string name="save_word_create_edit_fragment">Сохранить</string>
+
+    <!-- Меню -->
+    <string name="habits_list_menu">Список привычек</string>
+    <string name="about_app_menu">О приложении</string>
+
+
+    <!-- Типы привычек-->
+    <string name="good_type">Полезные</string>
+    <string name="bad_type">Вредные</string>
+
+    <!-- About App -->
+    <string name="about_app_text">Это приложение было создано Матюхиным Сергеем!\n\nСейчас реализовано ДЗ 4 </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

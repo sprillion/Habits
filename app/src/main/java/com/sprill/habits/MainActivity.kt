@@ -1,89 +1,141 @@
 package com.sprill.habits
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.navigation.NavigationView
+import com.sprill.habits.data.HabitResult
+import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.ActivityMainBinding
-import com.sprill.habits.databinding.FragmentHabitsListBinding
+import com.sprill.habits.fragments.AboutAppFragment
+import com.sprill.habits.fragments.CreateEditFragment
+import com.sprill.habits.fragments.TypesViewPagerFragment
+import com.sprill.habits.interfaces.*
 
-class MainActivity : AppCompatActivity(), CallBack {
+class MainActivity : AppCompatActivity(), Navigator, NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var binding: ActivityMainBinding
 
     companion object {
         const val BUNDLE_KEY_HABIT = "habit"
+        const val BUNDLE_KEY_HABITS_LIST = "habits_list"
+        const val BUNDLE_KEY_HABIT_RESULT = "habit_result"
         const val BUNDLE_KEY_ID = "id"
-        const val BUNDLE_KEY_IS_NEW = "isNew"
+        const val KEY_TYPE_GOOD = 0
+        const val KEY_TYPE_BAD = 1
         var habits: ArrayList<ItemHabit> = arrayListOf()
     }
 
+    private val currentFragment: Fragment
+        get() = supportFragmentManager.findFragmentById(R.id.fragment_container)!!
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var habitsListFragment: HabitsListFragment
+    private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+            super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+            updateTitle()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.navigation.setNavigationItemSelectedListener(this)
+        setNavigationMenu()
 
         if (savedInstanceState == null){
-            habitsListFragment = HabitsListFragment.newInstance()
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_layout, habitsListFragment)
+                    .replace(R.id.fragment_container, TypesViewPagerFragment.newInstance())
                     .commit()
         }
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
     }
 
-    override fun onFragmentViewCreated(itemHabit: ItemHabit, idItem: Int, fragment: CreateEditFragment){
-        if (idItem > -1) habits[idItem] = itemHabit
-        else habits.add(itemHabit)
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
+    }
+    override fun goBack() {
+        onBackPressed()
+    }
 
+    override fun goToMenu() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        setNavigationMenu()
+    }
+
+    override fun showCreateScreen() {
+        launchFragment(CreateEditFragment())
+    }
+
+    override fun showEditScreen(itemHabit: ItemHabit, idItem: Int) {
+        launchFragment(CreateEditFragment.newInstance(itemHabit, idItem))
+    }
+
+    override fun showAboutAppScreen() {
+        launchFragment(AboutAppFragment.newInstance())
+    }
+
+    private fun launchFragment(fragment: Fragment) {
         supportFragmentManager
-            .beginTransaction()
-            .remove(fragment)
-            .commit()
-        supportFragmentManager
-            .beginTransaction()
-            .show(habitsListFragment)
-            .commit()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container, fragment)
+                .commit()
     }
 
-/*
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.fab.setOnClickListener{
-            openCreateActivityForResult()
-        }
-        setAdapter()
+    override fun publishResult(result: HabitResult) {
+        supportFragmentManager.setFragmentResult(result.javaClass.name, bundleOf(BUNDLE_KEY_HABIT_RESULT to result))
     }
 
-    val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val id = result.data!!.getIntExtra(BUNDLE_KEY_ID, -1)
-            val habit = result.data?.getSerializableExtra(BUNDLE_KEY_HABITS) as ItemHabit
-            if (id == -1)
-                habits.add(habit)
-            else
-                habits[id] = habit
-            setAdapter()
+    override fun listenResult(
+        habitResultClass: Class<HabitResult>,
+        owner: LifecycleOwner,
+        listener: ResultListener<HabitResult>
+    ) {
+        supportFragmentManager.setFragmentResultListener(habitResultClass.name, owner, FragmentResultListener { key, bundle ->
+            listener.invoke(bundle.getParcelable(BUNDLE_KEY_HABIT_RESULT)!!)
+        })
+    }
+
+    private fun updateTitle(){
+        val fragment = currentFragment
+        title = if (fragment is HasCustomTitle) {
+            getString(fragment.getTitleRes())
+        } else {
+            getString(R.string.app_name)
         }
     }
 
-    fun openCreateActivityForResult() {
-        val intent = Intent(this, CreateEditActivity::class.java).apply {
-            putExtra(BUNDLE_KEY_IS_NEW, true)
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START))
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        else {
+            super.onBackPressed()
+            setNavigationMenu()
         }
-        resultLauncher.launch(intent)
     }
 
-    fun setAdapter(){
-        binding.recycler.adapter = Adapter(habits, this, resultLauncher)
+    private fun setNavigationMenu(){
+        binding.navigation.setCheckedItem(R.id.habits_list_nav)
     }
 
- */
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.habits_list_nav -> goToMenu()
+            R.id.about_app_nav -> showAboutAppScreen()
+        }
+
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
 
 }

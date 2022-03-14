@@ -4,7 +4,9 @@ android:layout_width="fill_parent"
 android:layout_height="wrap_content"
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-tools:context=".CreateEditFragment">
+tools:context=".fragments.CreateEditFragment"
+    android:background="@color/white"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +26,7 @@ tools:context=".CreateEditFragment">
                 android:id="@+id/textInputName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Название"
+                android:hint="@string/name_create_edit_fragment"
                 android:maxLength="30"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -43,7 +45,7 @@ tools:context=".CreateEditFragment">
                 android:id="@+id/textInputDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Описание"
+                android:hint="@string/description_create_edit_fragment"
                 android:maxLength="100"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -53,7 +55,7 @@ tools:context=".CreateEditFragment">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Приоритет"
+            android:text="@string/priority_create_edit_fragment"
             android:textAlignment="viewStart"
             android:textSize="16sp" />
 
@@ -67,7 +69,7 @@ tools:context=".CreateEditFragment">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Тип привычки"
+            android:text="@string/type_create_edit_fragment"
             android:textAlignment="viewStart"
             android:textSize="16sp" />
 
@@ -80,21 +82,15 @@ tools:context=".CreateEditFragment">
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:checked="false"
-                android:text="@string/radioButtonFirst" />
+                android:text="@string/good_radio_button" />
 
             <RadioButton
                 android:id="@+id/radioButtonSecond"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:checked="false"
-                android:text="@string/radioButtonSecond" />
+                android:text="@string/bad_radio_button" />
 
-            <RadioButton
-                android:id="@+id/radioButtonThird"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:checked="false"
-                android:text="@string/radioButtonThird" />
         </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -110,7 +106,7 @@ tools:context=".CreateEditFragment">
                 android:id="@+id/textInputCountExecution"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Количество выполнений"
+                android:hint="@string/count_create_edit_fragment"
                 android:maxLength="20"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -127,7 +123,7 @@ tools:context=".CreateEditFragment">
                 android:id="@+id/textInputPeriod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Периодичность выполнений"
+                android:hint="@string/period_create_edit_fragment"
                 android:maxLength="20"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -136,7 +132,7 @@ tools:context=".CreateEditFragment">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Цвет"
+            android:text="@string/color_word_create_edit_fragment"
             android:textAlignment="viewStart"
             android:textSize="16sp" />
 
@@ -156,7 +152,7 @@ tools:context=".CreateEditFragment">
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp"
             android:layout_gravity="center"
-            android:text="Сохранить" />
+            android:text="@string/save_word_create_edit_fragment" />
 
     </LinearLayout>
 </ScrollView>

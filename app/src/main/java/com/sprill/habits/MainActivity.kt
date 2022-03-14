@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(), Navigator, NavigationView.OnNavigation
         const val BUNDLE_KEY_ID = "id"
         const val KEY_TYPE_GOOD = 0
         const val KEY_TYPE_BAD = 1
-        var habits: ArrayList<ItemHabit> = arrayListOf()
     }
 
     private val currentFragment: Fragment

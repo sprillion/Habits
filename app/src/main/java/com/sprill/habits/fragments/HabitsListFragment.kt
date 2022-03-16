@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.sprill.habits.adapters.HabitsListAdapter
 import com.sprill.habits.MainActivity
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.FragmentHabitsListBinding
+import com.sprill.habits.interfaces.navigator
 
 class HabitsListFragment : Fragment() {
 
@@ -40,6 +40,6 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        binding.recycler.adapter = HabitsListAdapter(habits, context, findNavController())
+        binding.recycler.adapter = HabitsListAdapter(habits, context, navigator())
     }
 }

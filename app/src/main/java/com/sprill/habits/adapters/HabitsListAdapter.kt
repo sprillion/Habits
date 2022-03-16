@@ -11,8 +11,9 @@ import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.ItemHabitBinding
+import com.sprill.habits.interfaces.Navigator
 
-class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val context: Context?, private val navController: NavController) : RecyclerView.Adapter<ItemHabitViewHolder>() {
+class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val context: Context?, private val navigator: Navigator) : RecyclerView.Adapter<ItemHabitViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHabitViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -27,14 +28,7 @@ class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val co
         }
     }
 
-    private fun onButtonPressed(idItem: Int)
-    {
-        navController.navigate(R.id.action_typesViewPagerFragment_to_createEditFragment,
-            bundleOf(
-                MainActivity.BUNDLE_KEY_HABIT to habits[idItem],
-                MainActivity.BUNDLE_KEY_ID to idItem,
-                MainActivity.BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME to context?.getString(R.string.edit_screen_title)
-            )
-        )
+    private fun onButtonPressed(idItem: Int){
+        navigator.showEditScreen(habits[idItem], idItem)
     }
 }

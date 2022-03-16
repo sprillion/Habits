@@ -13,6 +13,7 @@ import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
+import com.sprill.habits.interfaces.navigator
 
 class TypesViewPagerFragment : Fragment() {
 
@@ -51,14 +52,7 @@ class TypesViewPagerFragment : Fragment() {
     }
 
     private fun onFubPressed(){
-        findNavController().navigate(
-            R.id.action_typesViewPagerFragment_to_createEditFragment,
-            bundleOf(
-                MainActivity.BUNDLE_KEY_HABIT to null,
-                MainActivity.BUNDLE_KEY_ID to MainActivity.BUNDLE_KEY_ID_NULL,
-                MainActivity.BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME to getString(R.string.create_screen_title)
-            )
-        )
+        navigator().showCreateScreen()
     }
 
     private fun setAdapter(){

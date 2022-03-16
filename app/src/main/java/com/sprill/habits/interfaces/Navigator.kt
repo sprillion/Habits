@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.sprill.habits.data.HabitResult
 import com.sprill.habits.data.ItemHabit
 
-typealias ResultListener<T> = (T) -> Unit
+//typealias ResultListener<T> = (T) -> Unit
 
 fun Fragment.navigator(): Navigator {
     return requireActivity() as Navigator
@@ -21,9 +21,9 @@ interface Navigator {
 
     fun goBack()
 
-    fun goToMenu()
+    fun goToHabitsList()
 
-    fun publishResult(result: HabitResult)
-
-    fun listenResult(habitResultClass: Class<HabitResult>, owner: LifecycleOwner, listener: ResultListener<HabitResult>)
+//    fun publishResult(result: HabitResult)
+//
+//    fun listenResult(habitResultClass: Class<HabitResult>, owner: LifecycleOwner, listener: ResultListener<HabitResult>)
 }

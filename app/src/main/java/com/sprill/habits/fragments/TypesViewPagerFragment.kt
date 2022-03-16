@@ -5,14 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
-import com.sprill.habits.data.HabitResult
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
-import com.sprill.habits.interfaces.navigator
 
 class TypesViewPagerFragment : Fragment() {
 
@@ -27,23 +27,38 @@ class TypesViewPagerFragment : Fragment() {
             onFubPressed()
         }
 
-        navigator().listenResult(HabitResult::class.java, viewLifecycleOwner){
-            if (it.itemHabit == null) return@listenResult
-            if (it.idItem == null) habits.add(it.itemHabit)
-            else habits[it.idItem] = it.itemHabit
-            setAdapter()
-        }
+        listenerResult()
         setAdapter()
         setTabLayout()
+
         return binding.root
     }
 
-    private fun onFubPressed(){
-        navigator().showCreateScreen()
+    private fun listenerResult()
+    {
+        parentFragmentManager.setFragmentResultListener(MainActivity.BUNDLE_KEY_HABIT_RESULT, viewLifecycleOwner){
+                _, data ->
+            val itemHabit : ItemHabit? = data.getParcelable(MainActivity.BUNDLE_KEY_HABIT)
+            val id: Int = data.getInt(MainActivity.BUNDLE_KEY_ID)
+
+            if (itemHabit == null) return@setFragmentResultListener
+            if (id == MainActivity.BUNDLE_KEY_ID_NULL)
+                habits.add(itemHabit)
+            else
+                habits[id] = itemHabit
+            setAdapter()
+        }
     }
 
-    companion object {
-        fun newInstance() = TypesViewPagerFragment()
+    private fun onFubPressed(){
+        findNavController().navigate(
+            R.id.action_typesViewPagerFragment_to_createEditFragment,
+            bundleOf(
+                MainActivity.BUNDLE_KEY_HABIT to null,
+                MainActivity.BUNDLE_KEY_ID to MainActivity.BUNDLE_KEY_ID_NULL,
+                MainActivity.BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME to getString(R.string.create_screen_title)
+            )
+        )
     }
 
     private fun setAdapter(){

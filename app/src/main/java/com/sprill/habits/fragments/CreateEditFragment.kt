@@ -5,48 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.sprill.habits.data.HabitResult
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.databinding.FragmentCreateEditBinding
-import com.sprill.habits.interfaces.*
 
-class CreateEditFragment : Fragment(), HasCustomTitle {
-
-    companion object {
-        fun newInstance(habit: ItemHabit?, idItem: Int) =
-            CreateEditFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(MainActivity.BUNDLE_KEY_HABIT, habit)
-                    putInt(MainActivity.BUNDLE_KEY_ID, idItem)
-                }
-            }
-    }
+class CreateEditFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateEditBinding
     private var itemHabit: ItemHabit? = null
     private var idItem: Int? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            itemHabit = it.getParcelable(MainActivity.BUNDLE_KEY_HABIT)
-            idItem = it.getInt(MainActivity.BUNDLE_KEY_ID)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateEditBinding.inflate(inflater)
-        binding.buttonSave.setOnClickListener{
-            navigator().publishResult(HabitResult(getNewItem(), idItem))
-            navigator().goBack()
-        }
-        fillData()
+        itemHabit = requireArguments().getParcelable(MainActivity.BUNDLE_KEY_HABIT)
+        idItem = requireArguments().getInt(MainActivity.BUNDLE_KEY_ID)
 
+        binding.buttonSave.setOnClickListener{
+            parentFragmentManager.setFragmentResult(
+                MainActivity.BUNDLE_KEY_HABIT_RESULT,
+                bundleOf(
+                    MainActivity.BUNDLE_KEY_HABIT to getNewItem(),
+                    MainActivity.BUNDLE_KEY_ID to idItem
+                )
+            )
+            findNavController().popBackStack()
+        }
+
+
+        fillData()
         return binding.root
     }
 
@@ -55,9 +47,8 @@ class CreateEditFragment : Fragment(), HasCustomTitle {
         binding.textInputName.setText(itemHabit!!.name)
         binding.textInputDescription.setText(itemHabit!!.description)
         binding.spinnerPriority.setSelection(itemHabit!!.priority)
-        if (itemHabit!!.type == MainActivity.KEY_TYPE_GOOD)
-            binding.radioButtonFirst.isChecked = true
-        else binding.radioButtonSecond.isChecked = true
+        binding.radioButtonFirst.isChecked = itemHabit!!.type == MainActivity.KEY_TYPE_GOOD
+        binding.radioButtonSecond.isChecked = itemHabit!!.type == MainActivity.KEY_TYPE_BAD
         binding.textInputCountExecution.setText(itemHabit!!.countExecution)
         binding.textInputPeriod.setText(itemHabit!!.period)
         binding.colorPicker.setColor(itemHabit!!.color)
@@ -74,6 +65,4 @@ class CreateEditFragment : Fragment(), HasCustomTitle {
             binding.colorPicker.getColor()
         )
     }
-
-    override fun getTitleRes(): Int = if (idItem == null) R.string.create_screen_title else R.string.edit_screen_title
 }

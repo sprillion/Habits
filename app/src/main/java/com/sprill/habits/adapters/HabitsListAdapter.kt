@@ -9,23 +9,31 @@ import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.ItemHabitBinding
 import com.sprill.habits.interfaces.Navigator
 
-class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val context: Context?, private val navigator: Navigator) : RecyclerView.Adapter<ItemHabitViewHolder>() {
+class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val typeHabits: Int, private val context: Context?, private val navigator: Navigator) : RecyclerView.Adapter<ItemHabitViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHabitViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ItemHabitViewHolder(ItemHabitBinding.inflate(inflater, parent, false))
     }
-    override fun getItemCount(): Int = habits.size
+    override fun getItemCount(): Int = getTypesHabits().size
 
     override fun onBindViewHolder(holder: ItemHabitViewHolder, position: Int) {
-        holder.bind(habits[position], context!!)
+        val item = getTypesHabits()[position]
+        holder.bind(item, context!!)
         holder.itemView.setOnClickListener{
-            onButtonPressed(position)
+            onButtonPressed(habits.indexOf(item))
         }
     }
 
-    private fun onButtonPressed(idItem: Int)
-    {
+    private fun getTypesHabits(): ArrayList<ItemHabit>{
+        val typesHabits = arrayListOf<ItemHabit>()
+        habits.forEach{
+            if (it.type == typeHabits) typesHabits.add(it)
+        }
+        return typesHabits
+    }
+
+    private fun onButtonPressed(idItem: Int){
         navigator.showEditScreen(habits[idItem], idItem)
     }
 }

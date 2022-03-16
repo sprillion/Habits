@@ -12,13 +12,6 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity, private val habits: A
     override fun getItemCount(): Int = countFragments
 
     override fun createFragment(position: Int): Fragment =
-            HabitsListFragment.newInstance(getTypesHabits(position))
+            HabitsListFragment.newInstance(habits, position)
 
-    private fun getTypesHabits(type: Int): ArrayList<ItemHabit>{
-        val typesHabits = arrayListOf<ItemHabit>()
-        habits.forEach{
-            if (it.type == type) typesHabits.add(it)
-        }
-        return typesHabits
-    }
 }

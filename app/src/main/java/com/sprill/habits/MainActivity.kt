@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), Navigator, NavigationView.OnNavigation
         const val BUNDLE_KEY_HABITS_LIST = "habits_list"
         const val BUNDLE_KEY_HABIT_RESULT = "habit_result"
         const val BUNDLE_KEY_ID = "id"
+        const val BUNDLE_KEY_TYPE = "type"
         const val KEY_TYPE_GOOD = 0
         const val KEY_TYPE_BAD = 1
     }
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(), Navigator, NavigationView.OnNavigation
         onBackPressed()
     }
 
-    override fun goToMenu() {
+    override fun goToMainFragment() {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         setNavigationMenu()
     }
@@ -100,7 +101,7 @@ class MainActivity : AppCompatActivity(), Navigator, NavigationView.OnNavigation
         owner: LifecycleOwner,
         listener: ResultListener<HabitResult>
     ) {
-        supportFragmentManager.setFragmentResultListener(habitResultClass.name, owner, FragmentResultListener { key, bundle ->
+        supportFragmentManager.setFragmentResultListener(habitResultClass.name, owner, FragmentResultListener { _, bundle ->
             listener.invoke(bundle.getParcelable(BUNDLE_KEY_HABIT_RESULT)!!)
         })
     }
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity(), Navigator, NavigationView.OnNavigation
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
-            R.id.habits_list_nav -> goToMenu()
+            R.id.habits_list_nav -> goToMainFragment()
             R.id.about_app_nav -> showAboutAppScreen()
         }
 

@@ -21,7 +21,7 @@ interface Navigator {
 
     fun goBack()
 
-    fun goToMenu()
+    fun goToMainFragment()
 
     fun publishResult(result: HabitResult)
 

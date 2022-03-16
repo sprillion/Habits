@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
+import com.sprill.habits.data.HabitResult
 import com.sprill.habits.databinding.FragmentCreateEditBinding
+import com.sprill.habits.interfaces.navigator
 
 class CreateEditFragment : Fragment() {
 
@@ -27,19 +29,28 @@ class CreateEditFragment : Fragment() {
         idItem = requireArguments().getInt(MainActivity.BUNDLE_KEY_ID)
 
         binding.buttonSave.setOnClickListener{
-            parentFragmentManager.setFragmentResult(
-                MainActivity.BUNDLE_KEY_HABIT_RESULT,
-                bundleOf(
-                    MainActivity.BUNDLE_KEY_HABIT to getNewItem(),
-                    MainActivity.BUNDLE_KEY_ID to idItem
-                )
-            )
-            findNavController().popBackStack()
+            sendResult()
+            navigator().goBack()
         }
-
-
         fillData()
         return binding.root
+    }
+
+    private fun sendResult(){
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(
+            MainActivity.BUNDLE_KEY_HABIT_RESULT,
+            HabitResult(
+                getNewItem(),
+                if (idItem == MainActivity.BUNDLE_KEY_ID_NULL) null else idItem
+            )
+        )
+//            parentFragmentManager.setFragmentResult(
+//                MainActivity.BUNDLE_KEY_HABIT_RESULT,
+//                bundleOf(
+//                    MainActivity.BUNDLE_KEY_HABIT to getNewItem(),
+//                    MainActivity.BUNDLE_KEY_ID to idItem
+//                )
+//            )
     }
 
     private fun fillData(){

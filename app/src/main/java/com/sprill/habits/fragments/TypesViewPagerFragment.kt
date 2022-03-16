@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
+import com.sprill.habits.data.HabitResult
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
 import com.sprill.habits.interfaces.navigator
@@ -37,18 +38,31 @@ class TypesViewPagerFragment : Fragment() {
 
     private fun listenerResult()
     {
-        parentFragmentManager.setFragmentResultListener(MainActivity.BUNDLE_KEY_HABIT_RESULT, viewLifecycleOwner){
-                _, data ->
-            val itemHabit : ItemHabit? = data.getParcelable(MainActivity.BUNDLE_KEY_HABIT)
-            val id: Int = data.getInt(MainActivity.BUNDLE_KEY_ID)
+        val liveData = findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<HabitResult>(MainActivity.BUNDLE_KEY_HABIT_RESULT)
+        liveData?.observe(viewLifecycleOwner){
+            val itemHabit : ItemHabit? = it.itemHabit
+            val id: Int? = it.idItem
 
-            if (itemHabit == null) return@setFragmentResultListener
-            if (id == MainActivity.BUNDLE_KEY_ID_NULL)
+            if (itemHabit == null) return@observe
+            if (id == null)
                 habits.add(itemHabit)
             else
                 habits[id] = itemHabit
             setAdapter()
         }
+
+//        parentFragmentManager.setFragmentResultListener(MainActivity.BUNDLE_KEY_HABIT_RESULT, viewLifecycleOwner){
+//                _, data ->
+//            val itemHabit : ItemHabit? = data.getParcelable(MainActivity.BUNDLE_KEY_HABIT)
+//            val id: Int = data.getInt(MainActivity.BUNDLE_KEY_ID)
+//
+//            if (itemHabit == null) return@setFragmentResultListener
+//            if (id == MainActivity.BUNDLE_KEY_ID_NULL)
+//                habits.add(itemHabit)
+//            else
+//                habits[id] = itemHabit
+//            setAdapter()
+//        }
     }
 
     private fun onFubPressed(){

@@ -15,11 +15,13 @@ class HabitsListFragment : Fragment() {
 
     private lateinit var binding: FragmentHabitsListBinding
     private var habits: ArrayList<ItemHabit> = arrayListOf()
+    private var typeHabits: Int = MainActivity.KEY_TYPE_GOOD
 
     companion object {
-        fun newInstance(habits: ArrayList<ItemHabit>) = HabitsListFragment().apply {
+        fun newInstance(habits: ArrayList<ItemHabit>, typeHabits: Int) = HabitsListFragment().apply {
             arguments = Bundle().apply {
                 putParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS_LIST, habits)
+                putInt(MainActivity.BUNDLE_KEY_TYPE, typeHabits)
             }
         }
     }
@@ -28,6 +30,7 @@ class HabitsListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             habits = it.getParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS_LIST) ?: arrayListOf()
+            typeHabits = it.getInt(MainActivity.BUNDLE_KEY_TYPE)
         }
     }
 
@@ -40,6 +43,6 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        binding.recycler.adapter = HabitsListAdapter(habits, context, navigator())
+        binding.recycler.adapter = HabitsListAdapter(habits, typeHabits, context, navigator())
     }
 }

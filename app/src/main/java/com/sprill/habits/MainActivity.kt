@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val BUNDLE_KEY_HABIT_RESULT = "HABIT_RESULT"
         const val BUNDLE_KEY_ID = "ID"
         const val BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME = "labelType"
+        const val BUNDLE_KEY_TYPE = "TYPE"
         const val BUNDLE_KEY_ID_NULL = -1
         const val KEY_TYPE_GOOD = 0
         const val KEY_TYPE_BAD = 1
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(binding.root)
 
         binding.navigation.setNavigationItemSelectedListener(this)
+        setNavigationMenu()
+
         navController = binding.fragmentContainer.getFragment<NavHostFragment>().navController
         setTitle()
     }
@@ -55,13 +58,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onSupportNavigateUp(): Boolean =
         navController.navigateUp() || super.onSupportNavigateUp()
 
+    private fun setNavigationMenu(){
+        binding.navigation.setCheckedItem(R.id.habits_list_nav)
+    }
 
     override fun goBack() {
+        setNavigationMenu()
         navController.popBackStack()
     }
 
     override fun goToHabitsList() {
         navController.popBackStack(R.id.typesViewPagerFragment, false)
+    }
+
+    override fun onBackPressed() {
+        setNavigationMenu()
+        super.onBackPressed()
     }
 
     override fun showCreateScreen() {
@@ -93,20 +105,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun launchDestination(destinationId: Int, args: Bundle? = null) {
         navController.navigate(destinationId, args)
     }
-
-//    override fun publishResult(result: HabitResult) {
-//        supportFragmentManager.setFragmentResult(result.javaClass.name, bundleOf(BUNDLE_KEY_HABIT_RESULT to result))
-//    }
-//
-//    override fun listenResult(
-//        habitResultClass: Class<HabitResult>,
-//        owner: LifecycleOwner,
-//        listener: ResultListener<HabitResult>
-//    ) {
-//        supportFragmentManager.setFragmentResultListener(habitResultClass.name, owner, FragmentResultListener { key, bundle ->
-//            listener.invoke(bundle.getParcelable(BUNDLE_KEY_HABIT_RESULT)!!)
-//        })
-//    }
-
 
 }

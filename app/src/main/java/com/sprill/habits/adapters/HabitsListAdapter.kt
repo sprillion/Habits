@@ -12,21 +12,29 @@ import com.sprill.habits.R
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.ItemHabitBinding
 
-class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val context: Context?, private val navController: NavController) : RecyclerView.Adapter<ItemHabitViewHolder>() {
+class HabitsListAdapter(private val habits: ArrayList<ItemHabit>, private val typeHabits: Int, private val context: Context?, private val navController: NavController) : RecyclerView.Adapter<ItemHabitViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHabitViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ItemHabitViewHolder(ItemHabitBinding.inflate(inflater, parent, false))
     }
-    override fun getItemCount(): Int = habits.size
+    override fun getItemCount(): Int = getTypesHabits().size
 
     override fun onBindViewHolder(holder: ItemHabitViewHolder, position: Int) {
-        holder.bind(habits[position], context!!)
+        val item = getTypesHabits()[position]
+        holder.bind(item, context!!)
         holder.itemView.setOnClickListener{
-            onButtonPressed(position)
+            onButtonPressed(habits.indexOf(item))
         }
     }
 
+    private fun getTypesHabits(): ArrayList<ItemHabit>{
+        val typesHabits = arrayListOf<ItemHabit>()
+        habits.forEach{
+            if (it.type == typeHabits) typesHabits.add(it)
+        }
+        return typesHabits
+    }
     private fun onButtonPressed(idItem: Int)
     {
         navController.navigate(R.id.action_typesViewPagerFragment_to_createEditFragment,

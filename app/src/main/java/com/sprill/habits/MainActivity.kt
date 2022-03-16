@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val BUNDLE_KEY_HABITS_LIST = "HABITS_LIST"
         const val BUNDLE_KEY_HABIT_RESULT = "HABIT_RESULT"
         const val BUNDLE_KEY_ID = "ID"
+        const val BUNDLE_KEY_TYPE = "TYPE"
         const val BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME = "labelType"
         const val BUNDLE_KEY_ID_NULL = -1
         const val KEY_TYPE_GOOD = 0

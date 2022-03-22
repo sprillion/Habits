@@ -29,7 +29,8 @@ class Model {
         return searchHabits
     }
 
-    fun getReversedHabits() = habits.reversed() as ArrayList
+    fun getReversedHabits() =
+        if (habits.size == 0) getHabitsAll() else habits.reversed() as ArrayList
 
     fun getSortedPriorityHabits(sortUp: Boolean): ArrayList<ItemHabit>{
         val sortedHabits = arrayListOf<ItemHabit>()
@@ -37,7 +38,7 @@ class Model {
         val endPriority = if (sortUp) PRIORITY_HIGH else PRIORITY_LOW
         val range = if (sortUp) startPriority downTo endPriority else startPriority .. endPriority
         for (i in range){
-            sortedHabits.addAll(habits.filter { it.priority == i } as ArrayList<ItemHabit>)
+            sortedHabits.addAll(habits.filter { it.priority == i } as ArrayList)
         }
         return sortedHabits
     }

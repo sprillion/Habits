@@ -40,6 +40,13 @@
     <string name="bad_type">Вредные</string>
 
     <!-- About App -->
-    <string name="about_app_text">Это приложение было создано Матюхиным Сергеем!\n\nСейчас реализовано ДЗ 4 </string>
+    <string name="about_app_text">Это приложение было создано Матюхиным Сергеем!\n\nСейчас реализовано ДЗ 5</string>
+
+
+    <!-- Bottom Sheet -->
+    <string name="bottom_sheet_name">Поиск и фильтрация</string>
+    <string name="bottom_sheet_search">Найти</string>
+    <string name="bottom_sheet_filter">Сортировка по дате создания</string>
+    <string name="bottom_sheet_priority">Сортировка по приоритету</string>
 
 </resources>

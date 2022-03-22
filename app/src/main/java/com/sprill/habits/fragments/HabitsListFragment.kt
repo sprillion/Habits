@@ -1,36 +1,28 @@
 package com.sprill.habits.fragments
 
 import android.os.Bundle
+import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.sprill.habits.adapters.HabitsListAdapter
 import com.sprill.habits.MainActivity
+import com.sprill.habits.R
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.FragmentHabitsListBinding
-import com.sprill.habits.interfaces.navigator
+import com.sprill.habits.interfaces.IAdapterCallBack
 
-class HabitsListFragment : Fragment() {
+class HabitsListFragment : Fragment(), IAdapterCallBack {
 
     private lateinit var binding: FragmentHabitsListBinding
-    private var habits: ArrayList<ItemHabit> = arrayListOf()
     private var typeHabits: Int = MainActivity.KEY_TYPE_GOOD
 
     companion object {
-        fun newInstance(habits: ArrayList<ItemHabit>, typeHabits: Int) = HabitsListFragment().apply {
+        fun newInstance(typeHabits: Int, habits: ArrayList<ItemHabit>) = HabitsListFragment().apply {
             arguments = Bundle().apply {
-                putParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS_LIST, habits)
+                putParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS, habits)
                 putInt(MainActivity.BUNDLE_KEY_TYPE, typeHabits)
             }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            habits = it.getParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS_LIST) ?: arrayListOf()
-            typeHabits = it.getInt(MainActivity.BUNDLE_KEY_TYPE)
         }
     }
 
@@ -38,11 +30,25 @@ class HabitsListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         binding = FragmentHabitsListBinding.inflate(inflater)
 
-        setAdapter()
+        arguments?.let { bundle ->
+            typeHabits = bundle.getInt(MainActivity.BUNDLE_KEY_TYPE)
+            val habits: ArrayList<ItemHabit>? = bundle.getParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS)
+            habits?.let { setAdapter(it) }
+        }
         return binding.root
     }
 
-    private fun setAdapter(){
-        binding.recycler.adapter = HabitsListAdapter(habits, typeHabits, context, navigator())
+    private fun setAdapter(habits: ArrayList<ItemHabit>){
+        binding.recycler.adapter = HabitsListAdapter(habits, typeHabits, this, context)
+    }
+
+    override fun onItemClicked(idItem: Int) {
+        findNavController().navigate(
+            R.id.action_typesViewPagerFragment_to_createEditFragment,
+            bundleOf(
+                MainActivity.BUNDLE_KEY_ID to idItem,
+                MainActivity.BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME to context?.getString(R.string.edit_screen_title)
+            )
+        )
     }
 }

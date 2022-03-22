@@ -6,11 +6,15 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.fragments.HabitsListFragment
 
-const val countFragments = 2
+
 class ViewPagerAdapter(fragmentActivity: FragmentActivity, private val habits: ArrayList<ItemHabit>) : FragmentStateAdapter(fragmentActivity){
 
-    override fun getItemCount(): Int = countFragments
+    override fun getItemCount(): Int = COUNT_FRAGMENTS
 
     override fun createFragment(position: Int): Fragment =
-        HabitsListFragment.newInstance(habits, position)
+        HabitsListFragment.newInstance(position, habits)
+
+    companion object{
+        private const val COUNT_FRAGMENTS = 2
+    }
 }

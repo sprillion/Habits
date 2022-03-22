@@ -39,6 +39,7 @@ class TypesViewPagerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.load()
         viewModel.habits.observe(viewLifecycleOwner, Observer {
                 habits ->
             setAdapter(habits)

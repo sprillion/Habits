@@ -18,7 +18,7 @@ class HabitListViewModel(private val model: Model) : ViewModel() {
         load()
     }
 
-    private fun load(){
+    fun load(){
         mutableHabits.value = model.getHabitsAll()
     }
 

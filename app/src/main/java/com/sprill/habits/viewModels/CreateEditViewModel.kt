@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sprill.habits.data.ItemHabit
-import com.sprill.habits.models.Model
+import com.sprill.habits.model.Model
 
 class CreateEditViewModel(private val model:Model): ViewModel() {
 

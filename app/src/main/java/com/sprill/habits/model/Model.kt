@@ -1,4 +1,4 @@
-package com.sprill.habits.models
+package com.sprill.habits.model
 
 import com.sprill.habits.data.ItemHabit
 

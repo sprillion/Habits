@@ -78,6 +78,7 @@ class CreateEditFragment : Fragment() {
 
     private fun getNewItem() : ItemHabit {
         return ItemHabit(
+            idItem,
             binding.textInputName.text.toString(),
             binding.textInputDescription.text.toString(),
             binding.spinnerPriority.selectedItemPosition,
@@ -85,7 +86,6 @@ class CreateEditFragment : Fragment() {
             binding.textInputCountExecution.text.toString(),
             binding.textInputPeriod.text.toString(),
             binding.colorPicker.getColor(),
-            idItem
         )
     }
 }

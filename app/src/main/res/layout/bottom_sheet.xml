@@ -66,7 +66,6 @@
             android:src="@drawable/arrow_up"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
             />
         <ImageView
             android:id="@+id/filter_id_down"
@@ -76,7 +75,6 @@
             android:src="@drawable/arrow_down"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
             />
     </LinearLayout>
     <LinearLayout
@@ -106,7 +104,6 @@
             android:src="@drawable/arrow_up"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
             />
         <ImageView
             android:id="@+id/filter_priority_down"
@@ -116,7 +113,6 @@
             android:src="@drawable/arrow_down"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
             />
 
     </LinearLayout>

@@ -3,37 +3,27 @@ package com.sprill.habits.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sprill.habits.data.ItemHabit
-import com.sprill.habits.model.Model
+import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.HabitsRepository
 
-class CreateEditViewModel(private val model:Model): ViewModel() {
+class CreateEditViewModel(private val habitsRepository: HabitsRepository): ViewModel() {
 
-    private val mutableItemHabit: MutableLiveData<ItemHabit?> = MutableLiveData()
-    private val mutableIdItem: MutableLiveData<Int> = MutableLiveData()
     private var isNewItem = false
+    private val mutableItemHabit: MutableLiveData<ItemHabit?> = MutableLiveData()
 
-    var idItem: LiveData<Int> = mutableIdItem
     var itemHabit: LiveData<ItemHabit?> = mutableItemHabit
 
-    private fun load(){
-         mutableItemHabit.value = mutableIdItem.value?.let { model.getItemHabit(it) }
-    }
-
-    fun setNewId(){
-        mutableIdItem.value = model.getNewId()
+    fun setNew(){
         isNewItem = true
     }
 
     fun setCurrentItem(idItem: Int){
-        mutableIdItem.value  = idItem
-        load()
+        mutableItemHabit.value = habitsRepository.getItemHabit(idItem)
     }
 
     fun setItemHabit(itemHabit: ItemHabit){
         if (isNewItem)
-            model.addHabit(itemHabit)
-
-        mutableIdItem.value?.let { model.changeHabit(itemHabit, it) }
-        load()
+            habitsRepository.createItemHabit(itemHabit)
+        else habitsRepository.updateItemHabit(itemHabit)
     }
 }

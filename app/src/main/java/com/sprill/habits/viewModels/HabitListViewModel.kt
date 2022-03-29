@@ -1,38 +1,32 @@
 package com.sprill.habits.viewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sprill.habits.data.ItemHabit
-import com.sprill.habits.model.Model
+import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.HabitsRepository
 
-class HabitListViewModel(private val model: Model) : ViewModel() {
 
-    private val mutableHabits: MutableLiveData<ArrayList<ItemHabit>> by lazy {
-        MutableLiveData()
+class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewModel() {
+
+    private val mutableSortedHabits: MutableLiveData<List<ItemHabit>> = MutableLiveData()
+    val sortedHabits: LiveData<List<ItemHabit>> = mutableSortedHabits
+
+    var habits: LiveData<List<ItemHabit>> = habitsRepository.getHabitsAll()
+
+    fun setSortPriority(sortUp: Boolean){
+        mutableSortedHabits.value = habitsRepository.getHabitsPriority(sortUp)
     }
 
-    var habits: LiveData<ArrayList<ItemHabit>> = mutableHabits
-
-    init {
-        load()
+    fun setSortId(sortUp: Boolean){
+        mutableSortedHabits.value = habitsRepository.getHabitsId(sortUp)
     }
 
-    fun load(){
-        mutableHabits.value = model.getHabitsAll()
-    }
-
-    fun sortPriorityHabits(sortUp: Boolean) {
-        mutableHabits.value = model.getSortedPriorityHabits(sortUp)
-    }
-
-    fun searchHabits(content: CharSequence?){
-        content?.let { mutableHabits.value = model.search(it) }
-    }
-
-    fun sortIdHabits(sortUp: Boolean){
-        if (sortUp) load()
-        else mutableHabits.value = model.getReversedHabits()
+    fun setSearcher(content: CharSequence?){
+        content?.let {
+            mutableSortedHabits.value = habitsRepository.getSearchedHabits(it)
+        }
     }
 
 }

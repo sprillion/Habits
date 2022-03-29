@@ -3,16 +3,15 @@ package com.sprill.habits.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.sprill.habits.data.ItemHabit
+import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.fragments.HabitsListFragment
 
-
-class ViewPagerAdapter(fragmentActivity: FragmentActivity, private val habits: ArrayList<ItemHabit>) : FragmentStateAdapter(fragmentActivity){
+class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity){
 
     override fun getItemCount(): Int = COUNT_FRAGMENTS
 
     override fun createFragment(position: Int): Fragment =
-        HabitsListFragment.newInstance(position, habits)
+        HabitsListFragment.newInstance(position)
 
     companion object{
         private const val COUNT_FRAGMENTS = 2

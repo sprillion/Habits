@@ -3,7 +3,7 @@ package com.sprill.habits
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import com.sprill.habits.data.ItemHabit
+import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.databinding.ItemHabitBinding
 
 class ItemHabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root){

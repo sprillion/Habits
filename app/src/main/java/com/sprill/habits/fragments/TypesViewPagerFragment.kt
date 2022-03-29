@@ -1,5 +1,6 @@
 package com.sprill.habits.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,42 +9,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
-import com.sprill.habits.data.ItemHabit
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
-import com.sprill.habits.factory
 import com.sprill.habits.viewModels.HabitListViewModel
 
 class TypesViewPagerFragment : Fragment() {
 
     private lateinit var binding: FragmentTypesViewPagerBinding
-    private val viewModel: HabitListViewModel by viewModels{factory()}
+    private val viewModel: HabitListViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         binding = FragmentTypesViewPagerBinding.inflate(layoutInflater)
-
         setAdapter()
         setTabLayout()
         setSearcher()
         setBinding()
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.load()
-        viewModel.habits.observe(viewLifecycleOwner, Observer {
-                habits ->
-            setAdapter(habits)
-        })
     }
 
     private fun setBinding(){
@@ -54,17 +42,36 @@ class TypesViewPagerFragment : Fragment() {
             bottomSheetLayout.apply {
 
                 filterIdDown.setOnClickListener{
-                    viewModel.sortIdHabits(false)
+                    viewModel.setSortId(false)
+                    checkedArrow(it)
                 }
                 filterIdUp.setOnClickListener{
-                    viewModel.sortIdHabits(true)
+                    viewModel.setSortId(true)
+                    checkedArrow(it)
                 }
                 filterPriorityDown.setOnClickListener{
-                    viewModel.sortPriorityHabits(false)
+                    viewModel.setSortPriority(false)
+                    checkedArrow(it)
                 }
                 filterPriorityUp.setOnClickListener{
-                    viewModel.sortPriorityHabits(true)
+                    viewModel.setSortPriority(true)
+                    checkedArrow(it)
                 }
+            }
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun checkedArrow(currentView: View? = null){
+        binding.bottomSheetLayout.apply {
+            filterIdDown.background = null
+            filterIdUp.background = null
+            filterPriorityDown.background = null
+            filterPriorityUp.background = null
+            currentView?.let{
+                it.setBackgroundColor(R.color.dark_grey)
+                if (textSearch.text?.length!! > 0)
+                    textSearch.setText("")
             }
         }
     }
@@ -79,8 +86,8 @@ class TypesViewPagerFragment : Fragment() {
         )
     }
 
-    private fun setAdapter(habits: ArrayList<ItemHabit> = arrayListOf()){
-        binding.viewPager.adapter = activity?.let { ViewPagerAdapter(it, habits) }
+    private fun setAdapter(){
+        binding.viewPager.adapter = activity?.let { ViewPagerAdapter(it) }
     }
 
     private fun setTabLayout() {
@@ -101,13 +108,17 @@ class TypesViewPagerFragment : Fragment() {
     private fun setSearcher(){
         binding.bottomSheetLayout.textSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
+
             }
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.searchHabits(text)
+                viewModel.setSearcher(text)
+                if (text?.length!! > 0 )
+                    checkedArrow()
             }
         })
     }

@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sprill.habits.ItemHabitViewHolder
-import com.sprill.habits.data.ItemHabit
+import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.databinding.ItemHabitBinding
 import com.sprill.habits.interfaces.IAdapterCallBack
 
 class HabitsListAdapter(
-    private val habits: ArrayList<ItemHabit>,
+    private val habits: List<ItemHabit>,
     private val typeHabits: Int,
     private val callBack: IAdapterCallBack,
     private val context: Context?,
@@ -33,11 +33,5 @@ class HabitsListAdapter(
         }
     }
 
-    private fun getTypesHabits(): ArrayList<ItemHabit>{
-        val typesHabits = arrayListOf<ItemHabit>()
-        habits.forEach{
-            if (it.type == typeHabits) typesHabits.add(it)
-        }
-        return typesHabits
-    }
+    private fun getTypesHabits(): List<ItemHabit> = habits.filter { it.type == typeHabits }
 }

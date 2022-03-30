@@ -1,10 +1,7 @@
 package com.sprill.habits.model.room
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.sprill.habits.model.room.entities.ItemHabit
 
 @Dao
@@ -21,6 +18,9 @@ interface HabitsDao {
 
     @Insert(entity = ItemHabit::class)
     fun createItemHabit(itemHabitEntity: ItemHabit)
+
+    @Delete(entity = ItemHabit::class)
+    fun deleteItemHabit(itemHabit: ItemHabit)
 
     @Query("SELECT * FROM habits")
     fun getHabitsForSort(): List<ItemHabit>

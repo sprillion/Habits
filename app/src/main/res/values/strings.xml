@@ -29,6 +29,7 @@
     <string name="period_create_edit_fragment">Периодичность выполнений</string>
     <string name="color_word_create_edit_fragment">Цвет</string>
     <string name="save_word_create_edit_fragment">Сохранить</string>
+    <string name="delete_word_create_edit_fragment">Удалить привычку</string>
 
     <!-- Меню -->
     <string name="habits_list_menu">Список привычек</string>

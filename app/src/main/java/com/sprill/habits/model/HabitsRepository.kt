@@ -12,6 +12,8 @@ interface HabitsRepository {
 
     fun createItemHabit(itemHabit: ItemHabit)
 
+    fun deleteItemHabit(itemHabit: ItemHabit)
+
     fun getItemHabit(idItem: Int): ItemHabit
 
     fun getHabitsId(sortUp: Boolean): List<ItemHabit>

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -46,6 +47,7 @@ class CreateEditFragment : Fragment() {
             sendResult()
             findNavController().navigateUp()
         }
+        showDeleteButton()
 
         viewModel.itemHabit.observe(viewLifecycleOwner, Observer {
                 itemHabit ->
@@ -85,5 +87,15 @@ class CreateEditFragment : Fragment() {
             binding.textInputPeriod.text.toString(),
             binding.colorPicker.getColor()
         )
+    }
+
+    private fun showDeleteButton(){
+        if (idItem == MainActivity.BUNDLE_KEY_ID_NULL)
+            binding.buttonDelete.isVisible = false
+        else
+            binding.buttonDelete.setOnClickListener {
+                viewModel.deleteItem()
+                findNavController().navigateUp()
+            }
     }
 }

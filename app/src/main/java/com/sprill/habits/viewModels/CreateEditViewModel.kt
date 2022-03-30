@@ -26,4 +26,8 @@ class CreateEditViewModel(private val habitsRepository: HabitsRepository): ViewM
             habitsRepository.createItemHabit(itemHabit)
         else habitsRepository.updateItemHabit(itemHabit)
     }
+
+    fun deleteItem(){
+        itemHabit.value?.let { habitsRepository.deleteItemHabit(it) }
+    }
 }

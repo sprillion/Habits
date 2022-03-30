@@ -18,6 +18,10 @@ class RoomHabitsRepository(
         habitsDao.updateItemHabit(itemHabit)
     }
 
+    override fun deleteItemHabit(itemHabit: ItemHabit) {
+        habitsDao.deleteItemHabit(itemHabit)
+    }
+
     override fun getItemHabit(idItem: Int) = habitsDao.getItemHabit(idItem)
 
     override fun getHabitsId(sortUp: Boolean): List<ItemHabit> =

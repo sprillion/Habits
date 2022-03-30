@@ -12,7 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop= "16dp"
+        android:paddingBottom="40dp"
         >
 
         <com.google.android.material.textfield.TextInputLayout
@@ -28,7 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_create_edit_fragment"
-                android:maxLength="30"/>
+                android:maxLength="30"
+                android:inputType="text"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,7 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/description_create_edit_fragment"
-                android:maxLength="100"/>
+                android:maxLength="100"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +114,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/count_create_edit_fragment"
-                android:maxLength="20"/>
+                android:maxLength="20"
+                android:inputType="text"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,7 +133,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/period_create_edit_fragment"
-                android:maxLength="20"/>
+                android:maxLength="20"
+                android:inputType="text"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,12 +158,21 @@
 
         <Button
             android:id="@+id/buttonSave"
-            android:layout_width="wrap_content"
+            android:layout_width="232dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="40dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/save_word_create_edit_fragment" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="232dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/delete_word_create_edit_fragment"
+            android:backgroundTint="@color/delete_button"
+            />
 
     </LinearLayout>
 </ScrollView>

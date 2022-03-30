@@ -11,5 +11,6 @@
     <color name="grey">#E8DBE6EE</color>
     <color name="dark_grey">#E89ABCD3</color>
     <color name="color_divider">#E8878787</color>
+    <color name="delete_button">#E8E84646</color>
 
 </resources>

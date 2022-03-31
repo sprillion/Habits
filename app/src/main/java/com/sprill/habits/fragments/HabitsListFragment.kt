@@ -24,12 +24,12 @@ class HabitsListFragment : Fragment(), IAdapterCallBack {
 
     private lateinit var binding: FragmentHabitsListBinding
     private var typeHabits: Int = MainActivity.KEY_TYPE_GOOD
+    private val viewModel: HabitListViewModel by viewModels { factory() }
 
     companion object {
-        fun newInstance(typeHabits: Int, habits: ArrayList<ItemHabit>) = HabitsListFragment().apply {
+        fun newInstance(typeHabits: Int) = HabitsListFragment().apply {
             arguments = Bundle().apply {
                 putInt(MainActivity.BUNDLE_KEY_TYPE, typeHabits)
-                putParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS, habits)
             }
         }
     }
@@ -40,13 +40,22 @@ class HabitsListFragment : Fragment(), IAdapterCallBack {
 
         arguments?.let { bundle ->
             typeHabits = bundle.getInt(MainActivity.BUNDLE_KEY_TYPE)
-            val habits: ArrayList<ItemHabit>? = bundle.getParcelableArrayList(MainActivity.BUNDLE_KEY_HABITS)
-            habits?.let {
-                setAdapter(it)
-            }
         }
 
+        setObservers()
+
         return binding.root
+    }
+
+    private fun setObservers(){
+        viewModel.habits.observe(activity as LifecycleOwner, Observer {
+                habits ->
+            setAdapter(habits)
+        })
+        viewModel.sortedHabits.observe(activity as LifecycleOwner, Observer {
+                habits ->
+            setAdapter(habits)
+        })
     }
 
     private fun setAdapter(habits: List<ItemHabit>){

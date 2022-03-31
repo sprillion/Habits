@@ -12,7 +12,7 @@ class ViewModelFactory() : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val viewModel = when(modelClass){
             HabitListViewModel::class.java ->{
-                HabitListViewModel(Repository.habitsRepository)
+                HabitListViewModel.getHabitListViewModel(Repository.habitsRepository)
             }
             CreateEditViewModel::class.java -> {
                 CreateEditViewModel(Repository.habitsRepository)

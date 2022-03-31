@@ -33,7 +33,6 @@ class TypesViewPagerFragment : Fragment() {
         binding = FragmentTypesViewPagerBinding.inflate(layoutInflater)
 
         setAdapter()
-        setObservers()
         setTabLayout()
         setSearcher()
         setBinding()
@@ -68,18 +67,6 @@ class TypesViewPagerFragment : Fragment() {
         }
     }
 
-    private fun setObservers(){
-
-        viewModel.habits.observe(activity as LifecycleOwner, Observer {
-                habits ->
-            setAdapter(habits)
-        })
-        viewModel.sortedHabits.observe(activity as LifecycleOwner, Observer {
-                habits ->
-            setAdapter(habits)
-        })
-    }
-
     @SuppressLint("ResourceAsColor")
     private fun checkedArrow(currentView: View? = null){
         binding.bottomSheetLayout.apply {
@@ -105,8 +92,8 @@ class TypesViewPagerFragment : Fragment() {
         )
     }
 
-    private fun setAdapter(habits: List<ItemHabit> = listOf()){
-        binding.viewPager.adapter = activity?.let { ViewPagerAdapter(it, habits) }
+    private fun setAdapter(){
+        binding.viewPager.adapter = activity?.let { ViewPagerAdapter(it) }
     }
 
     private fun setTabLayout() {

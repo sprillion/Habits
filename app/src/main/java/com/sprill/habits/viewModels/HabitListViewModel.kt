@@ -51,4 +51,13 @@ class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewM
         }
     }
 
+    companion object{
+        private var viewModel: HabitListViewModel? = null
+
+        fun getHabitListViewModel(habitsRepository: HabitsRepository): HabitListViewModel{
+            if (viewModel == null)
+                viewModel = HabitListViewModel(habitsRepository)
+            return viewModel!!
+        }
+    }
 }

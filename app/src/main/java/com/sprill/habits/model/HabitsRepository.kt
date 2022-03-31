@@ -8,17 +8,17 @@ interface HabitsRepository {
 
     fun getHabitsAll(): LiveData<List<ItemHabit>>
 
-    fun updateItemHabit(itemHabit: ItemHabit)
+    suspend fun updateItemHabit(itemHabit: ItemHabit)
 
-    fun createItemHabit(itemHabit: ItemHabit)
+    suspend fun createItemHabit(itemHabit: ItemHabit)
 
-    fun deleteItemHabit(itemHabit: ItemHabit)
+    suspend fun deleteItemHabit(itemHabit: ItemHabit)
 
-    fun getItemHabit(idItem: Int): ItemHabit
+    suspend fun getItemHabit(idItem: Int): ItemHabit
 
-    fun getHabitsId(sortUp: Boolean): List<ItemHabit>
+    suspend fun getHabitsId(sortUp: Boolean): List<ItemHabit>
 
-    fun getHabitsPriority(sortUp: Boolean): List<ItemHabit>
+    suspend fun getHabitsPriority(sortUp: Boolean): List<ItemHabit>
 
-    fun getSearchedHabits(content: CharSequence):ArrayList<ItemHabit>
+    suspend fun getSearchedHabits(content: CharSequence):ArrayList<ItemHabit>
 }

@@ -20,7 +20,7 @@ object Repository {
             AppDatabase::class.java,
             "Database"
         )
-            .allowMainThreadQueries()
+            //.allowMainThreadQueries()
             .build()
     }
 

@@ -11,19 +11,19 @@ interface HabitsDao {
     fun getHabitsAll(): LiveData<List<ItemHabit>>
 
     @Query("SELECT * FROM habits WHERE id = :idItem")
-    fun getItemHabit(idItem: Int): ItemHabit
+    suspend fun getItemHabit(idItem: Int): ItemHabit
 
     @Update(entity = ItemHabit::class)
-    fun updateItemHabit(itemHabit: ItemHabit)
+    suspend fun updateItemHabit(itemHabit: ItemHabit)
 
     @Insert(entity = ItemHabit::class)
-    fun createItemHabit(itemHabitEntity: ItemHabit)
+    suspend fun createItemHabit(itemHabitEntity: ItemHabit)
 
     @Delete(entity = ItemHabit::class)
-    fun deleteItemHabit(itemHabit: ItemHabit)
+    suspend fun deleteItemHabit(itemHabit: ItemHabit)
 
     @Query("SELECT * FROM habits")
-    fun getHabitsForSort(): List<ItemHabit>
+    suspend fun getHabitsForSort(): List<ItemHabit>
 
 
 }

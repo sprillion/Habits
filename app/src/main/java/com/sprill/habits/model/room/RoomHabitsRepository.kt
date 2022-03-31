@@ -1,8 +1,10 @@
 package com.sprill.habits.model.room
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.model.HabitsRepository
+import kotlinx.coroutines.delay
 
 class RoomHabitsRepository(
     private val habitsDao: HabitsDao
@@ -10,28 +12,28 @@ class RoomHabitsRepository(
 
     override fun getHabitsAll(): LiveData<List<ItemHabit>> = habitsDao.getHabitsAll()
 
-    override fun createItemHabit(itemHabit: ItemHabit) {
+    override suspend fun createItemHabit(itemHabit: ItemHabit) {
         habitsDao.createItemHabit(itemHabit)
     }
 
-    override fun updateItemHabit(itemHabit: ItemHabit) {
+    override suspend fun updateItemHabit(itemHabit: ItemHabit) {
         habitsDao.updateItemHabit(itemHabit)
     }
 
-    override fun deleteItemHabit(itemHabit: ItemHabit) {
+    override suspend fun deleteItemHabit(itemHabit: ItemHabit) {
         habitsDao.deleteItemHabit(itemHabit)
     }
 
-    override fun getItemHabit(idItem: Int) = habitsDao.getItemHabit(idItem)
+    override suspend fun getItemHabit(idItem: Int) = habitsDao.getItemHabit(idItem)
 
-    override fun getHabitsId(sortUp: Boolean): List<ItemHabit> =
+    override suspend fun getHabitsId(sortUp: Boolean): List<ItemHabit> =
         if (sortUp)
             habitsDao.getHabitsForSort()
         else
             habitsDao.getHabitsForSort().asReversed()
 
 
-    override fun getHabitsPriority(sortUp:Boolean): List<ItemHabit>{
+    override suspend fun getHabitsPriority(sortUp:Boolean): List<ItemHabit>{
         val sortedHabits = habitsDao.getHabitsForSort() as MutableList
 
         sortedHabits.apply {
@@ -47,7 +49,7 @@ class RoomHabitsRepository(
         return sortedHabits
     }
 
-    override fun getSearchedHabits(content: CharSequence):ArrayList<ItemHabit>{
+    override suspend fun getSearchedHabits(content: CharSequence):ArrayList<ItemHabit>{
         val searchHabits = arrayListOf<ItemHabit>()
         habitsDao.getHabitsForSort().forEach{
             if (it.name.contains(content))

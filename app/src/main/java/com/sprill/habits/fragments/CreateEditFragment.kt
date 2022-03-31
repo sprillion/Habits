@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,22 +16,19 @@ import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.Repository
 import com.sprill.habits.databinding.FragmentCreateEditBinding
+import com.sprill.habits.factory
 import com.sprill.habits.viewModels.CreateEditViewModel
 
 class CreateEditFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateEditBinding
-    private lateinit var viewModel: CreateEditViewModel
+    private val viewModel: CreateEditViewModel by viewModels { factory() }
+
     private var idItem: Int = MainActivity.BUNDLE_KEY_ID_NULL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idItem = requireArguments().getInt(MainActivity.BUNDLE_KEY_ID)
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CreateEditViewModel(Repository.habitsRepository) as T
-            }
-        }).get(CreateEditViewModel::class.java)
 
         if (idItem == MainActivity.BUNDLE_KEY_ID_NULL)
             viewModel.setNew()

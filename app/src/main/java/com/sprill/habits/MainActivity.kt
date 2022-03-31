@@ -22,9 +22,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController : NavController
-    private lateinit var viewModel: HabitListViewModel
 
     companion object {
+        const val BUNDLE_KEY_HABITS = "HABITS"
         const val BUNDLE_KEY_ID = "ID"
         const val BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME = "labelType"
         const val BUNDLE_KEY_TYPE = "TYPE"
@@ -38,12 +38,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Repository.init(applicationContext)
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HabitListViewModel(Repository.habitsRepository) as T
-            }
-        }).get(HabitListViewModel::class.java)
 
         binding.navigation.setNavigationItemSelectedListener(this)
         setNavigationMenu()

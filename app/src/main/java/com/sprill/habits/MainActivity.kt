@@ -4,19 +4,14 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
 import com.sprill.habits.databinding.ActivityMainBinding
-import com.sprill.habits.viewModels.HabitListViewModel
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
 

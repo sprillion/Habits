@@ -2,7 +2,10 @@ package com.sprill.habits.model.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     tableName = "habits"
 )
@@ -15,4 +18,4 @@ data class ItemHabit(
     val countExecution: String,
     val period: String,
     val color: Int
-)
+): Parcelable

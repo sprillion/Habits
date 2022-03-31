@@ -10,23 +10,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
+import com.sprill.habits.factory
+import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.viewModels.HabitListViewModel
 
 class TypesViewPagerFragment : Fragment() {
 
     private lateinit var binding: FragmentTypesViewPagerBinding
-    private val viewModel: HabitListViewModel by activityViewModels()
+    private val viewModel: HabitListViewModel by viewModels { factory() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentTypesViewPagerBinding.inflate(layoutInflater)
+
         setAdapter()
+        setObservers()
         setTabLayout()
         setSearcher()
         setBinding()
@@ -61,6 +68,18 @@ class TypesViewPagerFragment : Fragment() {
         }
     }
 
+    private fun setObservers(){
+
+        viewModel.habits.observe(activity as LifecycleOwner, Observer {
+                habits ->
+            setAdapter(habits)
+        })
+        viewModel.sortedHabits.observe(activity as LifecycleOwner, Observer {
+                habits ->
+            setAdapter(habits)
+        })
+    }
+
     @SuppressLint("ResourceAsColor")
     private fun checkedArrow(currentView: View? = null){
         binding.bottomSheetLayout.apply {
@@ -86,8 +105,8 @@ class TypesViewPagerFragment : Fragment() {
         )
     }
 
-    private fun setAdapter(){
-        binding.viewPager.adapter = activity?.let { ViewPagerAdapter(it) }
+    private fun setAdapter(habits: List<ItemHabit> = listOf()){
+        binding.viewPager.adapter = activity?.let { ViewPagerAdapter(it, habits) }
     }
 
     private fun setTabLayout() {

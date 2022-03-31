@@ -1,6 +1,5 @@
 package com.sprill.habits.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +12,8 @@ class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewM
     private val mutableSortedHabits: MutableLiveData<List<ItemHabit>> = MutableLiveData()
     val sortedHabits: LiveData<List<ItemHabit>> = mutableSortedHabits
 
-    var habits: LiveData<List<ItemHabit>> = habitsRepository.getHabitsAll()
+    val habits: LiveData<List<ItemHabit>> = habitsRepository.getHabitsAll()
+
 
     fun setSortPriority(sortUp: Boolean){
         mutableSortedHabits.value = habitsRepository.getHabitsPriority(sortUp)

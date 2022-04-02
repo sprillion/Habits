@@ -8,9 +8,7 @@ interface HabitsRepository {
 
     fun getHabitsAll(): LiveData<List<ItemHabit>>
 
-    suspend fun updateItemHabit(itemHabit: ItemHabit)
-
-    suspend fun createItemHabit(itemHabit: ItemHabit)
+    suspend fun sendItemHabit(itemHabit: ItemHabit)
 
     suspend fun deleteItemHabit(itemHabit: ItemHabit)
 

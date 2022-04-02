@@ -14,7 +14,7 @@ interface HabitsDao {
     suspend fun getItemHabit(idItem: Int): ItemHabit
 
     @Update(entity = ItemHabit::class)
-    suspend fun updateItemHabit(itemHabit: ItemHabit)
+    suspend fun updateItemHabit(itemHabit: ItemHabit): Int
 
     @Insert(entity = ItemHabit::class)
     suspend fun createItemHabit(itemHabitEntity: ItemHabit)

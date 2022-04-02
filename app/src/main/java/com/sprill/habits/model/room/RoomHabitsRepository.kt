@@ -12,12 +12,9 @@ class RoomHabitsRepository(
 
     override fun getHabitsAll(): LiveData<List<ItemHabit>> = habitsDao.getHabitsAll()
 
-    override suspend fun createItemHabit(itemHabit: ItemHabit) {
-        habitsDao.createItemHabit(itemHabit)
-    }
-
-    override suspend fun updateItemHabit(itemHabit: ItemHabit) {
-        habitsDao.updateItemHabit(itemHabit)
+    override suspend fun sendItemHabit(itemHabit: ItemHabit) {
+        if (habitsDao.updateItemHabit(itemHabit) == NO_ITEM)
+            habitsDao.createItemHabit(itemHabit)
     }
 
     override suspend fun deleteItemHabit(itemHabit: ItemHabit) {
@@ -58,5 +55,9 @@ class RoomHabitsRepository(
         return searchHabits
     }
 
+
+    companion object{
+        private const val NO_ITEM = 0
+    }
 
 }

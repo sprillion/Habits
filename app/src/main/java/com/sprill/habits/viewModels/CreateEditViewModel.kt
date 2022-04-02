@@ -10,37 +10,31 @@ import kotlinx.coroutines.*
 
 class CreateEditViewModel(private val habitsRepository: HabitsRepository): ViewModel() {
 
-    private var isNewItem = false
     private val mutableItemHabit: MutableLiveData<ItemHabit?> = MutableLiveData()
 
     var itemHabit: LiveData<ItemHabit?> = mutableItemHabit
 
-    fun setNew(){
-        isNewItem = true
-    }
-
     fun setCurrentItem(idItem: Int){
-        viewModelScope.launch(Dispatchers.Main) {
-           val result =  withContext(Dispatchers.IO){
-                habitsRepository.getItemHabit(idItem)
-           }
-           mutableItemHabit.value = result
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val result = withContext(Dispatchers.IO) {
+                    habitsRepository.getItemHabit(idItem)
+                }
+                mutableItemHabit.postValue(result)
+            }
         }
     }
 
-    fun setItemHabit(itemHabit: ItemHabit){
-        viewModelScope.launch(Dispatchers.Main)  {
+    fun sendItemHabit(itemHabit: ItemHabit){
+        viewModelScope.launch  {
             withContext(Dispatchers.IO){
-                if (isNewItem)
-                    habitsRepository.createItemHabit(itemHabit)
-                else
-                    habitsRepository.updateItemHabit(itemHabit)
+                habitsRepository.sendItemHabit(itemHabit)
             }
         }
     }
 
     fun deleteItem(){
-        viewModelScope.launch(Dispatchers.Main)  {
+        viewModelScope.launch  {
             withContext(Dispatchers.IO){
                 itemHabit.value?.let { habitsRepository.deleteItemHabit(it) }
             }

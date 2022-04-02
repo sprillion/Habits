@@ -22,32 +22,32 @@ class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewM
 
 
     fun setSortPriority(sortUp: Boolean){
-        viewModelScope.launch(Dispatchers.Main)  {
+        viewModelScope.launch {
             val result =  withContext(Dispatchers.IO){
                 habitsRepository.getHabitsPriority(sortUp)
             }
-            mutableSortedHabits.value = result
+            mutableSortedHabits.postValue(result)
         }
 
     }
 
     fun setSortId(sortUp: Boolean){
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 habitsRepository.getHabitsId(sortUp)
             }
-            mutableSortedHabits.value = result
+            mutableSortedHabits.postValue(result)
         }
     }
 
     fun setSearcher(content: CharSequence?){
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 content?.let {
                     habitsRepository.getSearchedHabits(it)
                 }
             }
-            mutableSortedHabits.value = result
+            mutableSortedHabits.postValue(result)
         }
     }
 

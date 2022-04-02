@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
-import com.sprill.habits.Repository
 import com.sprill.habits.databinding.FragmentCreateEditBinding
 import com.sprill.habits.factory
 import com.sprill.habits.viewModels.CreateEditViewModel
@@ -30,16 +27,14 @@ class CreateEditFragment : Fragment() {
         super.onCreate(savedInstanceState)
         idItem = requireArguments().getInt(MainActivity.BUNDLE_KEY_ID)
 
-        if (idItem == MainActivity.BUNDLE_KEY_ID_NULL)
-            viewModel.setNew()
-        else
+        if (idItem != MainActivity.BUNDLE_KEY_ID_NULL)
             viewModel.setCurrentItem(idItem)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCreateEditBinding.inflate(inflater)
         binding.buttonSave.setOnClickListener{
             sendResult()
@@ -56,7 +51,7 @@ class CreateEditFragment : Fragment() {
     }
 
     private fun sendResult(){
-        viewModel.setItemHabit(getNewItem())
+        viewModel.sendItemHabit(getNewItem())
     }
 
     private fun fillData(itemHabit: ItemHabit?){

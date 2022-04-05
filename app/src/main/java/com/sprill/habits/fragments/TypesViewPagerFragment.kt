@@ -2,17 +2,12 @@ package com.sprill.habits.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sprill.habits.MainActivity
@@ -20,7 +15,6 @@ import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
 import com.sprill.habits.factory
-import com.sprill.habits.model.room.entities.ItemHabit
 import com.sprill.habits.viewModels.HabitListViewModel
 
 class TypesViewPagerFragment : Fragment() {
@@ -34,7 +28,7 @@ class TypesViewPagerFragment : Fragment() {
 
         setAdapter()
         setTabLayout()
-        setSearcher()
+        //setSearcher()
         setBinding()
 
         return binding.root
@@ -45,25 +39,25 @@ class TypesViewPagerFragment : Fragment() {
             fab.setOnClickListener{
                 onFubPressed()
             }
-            bottomSheetLayout.apply {
-
-                filterIdDown.setOnClickListener{
-                    viewModel.setSortId(false)
-                    checkedArrow(it)
-                }
-                filterIdUp.setOnClickListener{
-                    viewModel.setSortId(true)
-                    checkedArrow(it)
-                }
-                filterPriorityDown.setOnClickListener{
-                    viewModel.setSortPriority(false)
-                    checkedArrow(it)
-                }
-                filterPriorityUp.setOnClickListener{
-                    viewModel.setSortPriority(true)
-                    checkedArrow(it)
-                }
-            }
+//            bottomSheetLayout.apply {
+//
+//                filterIdDown.setOnClickListener{
+//                    viewModel.setSortId(false)
+//                    checkedArrow(it)
+//                }
+//                filterIdUp.setOnClickListener{
+//                    viewModel.setSortId(true)
+//                    checkedArrow(it)
+//                }
+//                filterPriorityDown.setOnClickListener{
+//                    viewModel.setSortPriority(false)
+//                    checkedArrow(it)
+//                }
+//                filterPriorityUp.setOnClickListener{
+//                    viewModel.setSortPriority(true)
+//                    checkedArrow(it)
+//                }
+//            }
         }
     }
 
@@ -111,22 +105,22 @@ class TypesViewPagerFragment : Fragment() {
         }.attach()
     }
 
-    private fun setSearcher(){
-        binding.bottomSheetLayout.textSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.setSearcher(text)
-                if (text?.length!! > 0 )
-                    checkedArrow()
-            }
-        })
-    }
+//    private fun setSearcher(){
+//        binding.bottomSheetLayout.textSearch.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(p0: Editable?) {
+//
+//            }
+//
+//            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                viewModel.setSearcher(text)
+//                if (text?.length!! > 0 )
+//                    checkedArrow()
+//            }
+//        })
+//    }
 
 }

@@ -5,6 +5,8 @@ buildscript {
     ext.room_version = "2.4.2"
     ext.lifecycle_version = "2.5.0-alpha05"
     ext.fragment_version = "1.4.1"
+    ext.retrofit_version = "2.9.0"
+    ext.okHttp_version = "4.9.3"
 
     repositories {
         google()

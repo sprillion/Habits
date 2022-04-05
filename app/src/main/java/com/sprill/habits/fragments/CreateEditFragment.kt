@@ -5,11 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.retrofit.ItemHabit
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
 import com.sprill.habits.databinding.FragmentCreateEditBinding
@@ -21,11 +20,11 @@ class CreateEditFragment : Fragment() {
     private lateinit var binding: FragmentCreateEditBinding
     private val viewModel: CreateEditViewModel by viewModels { factory() }
 
-    private var idItem: Int = MainActivity.BUNDLE_KEY_ID_NULL
+    private var idItem: String = MainActivity.BUNDLE_KEY_ID_NULL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idItem = requireArguments().getInt(MainActivity.BUNDLE_KEY_ID)
+        idItem = requireArguments().getString(MainActivity.BUNDLE_KEY_ID) ?: MainActivity.BUNDLE_KEY_ID_NULL
 
         if (idItem != MainActivity.BUNDLE_KEY_ID_NULL)
             viewModel.setCurrentItem(idItem)
@@ -40,7 +39,7 @@ class CreateEditFragment : Fragment() {
             sendResult()
             findNavController().navigateUp()
         }
-        showDeleteButton()
+        //showDeleteButton()
 
         viewModel.itemHabit.observe(viewLifecycleOwner, Observer {
                 itemHabit ->
@@ -71,24 +70,25 @@ class CreateEditFragment : Fragment() {
 
     private fun getNewItem() : ItemHabit {
         return ItemHabit(
-            if (idItem == MainActivity.BUNDLE_KEY_ID_NULL) 0 else idItem,
-            binding.textInputName.text.toString(),
-            binding.textInputDescription.text.toString(),
-            binding.spinnerPriority.selectedItemPosition,
-            if (binding.radioGroupType.checkedRadioButtonId == R.id.radioButtonFirst) MainActivity.KEY_TYPE_GOOD else MainActivity.KEY_TYPE_BAD,
-            binding.textInputCountExecution.text.toString(),
-            binding.textInputPeriod.text.toString(),
-            binding.colorPicker.getColor()
+            id = (if (idItem == MainActivity.BUNDLE_KEY_ID_NULL) 0 else idItem).toString(),
+            name = binding.textInputName.text.toString(),
+            description = binding.textInputDescription.text.toString(),
+            priority = binding.spinnerPriority.selectedItemPosition,
+            type = if (binding.radioGroupType.checkedRadioButtonId == R.id.radioButtonFirst) MainActivity.KEY_TYPE_GOOD else MainActivity.KEY_TYPE_BAD,
+            countExecution = binding.textInputCountExecution.text.toString(),
+            period = binding.textInputPeriod.text.toString(),
+            color = binding.colorPicker.getColor(),
+            date = 0
         )
     }
 
-    private fun showDeleteButton(){
-        if (idItem == MainActivity.BUNDLE_KEY_ID_NULL)
-            binding.buttonDelete.isVisible = false
-        else
-            binding.buttonDelete.setOnClickListener {
-                viewModel.deleteItem()
-                findNavController().navigateUp()
-            }
-    }
+//    private fun showDeleteButton(){
+//        if (idItem == MainActivity.BUNDLE_KEY_ID_NULL)
+//            binding.buttonDelete.isVisible = false
+//        else
+//            binding.buttonDelete.setOnClickListener {
+//                viewModel.deleteItem()
+//                findNavController().navigateUp()
+//            }
+//    }
 }

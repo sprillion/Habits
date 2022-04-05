@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sprill.habits.ItemHabitViewHolder
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.retrofit.ItemHabit
 import com.sprill.habits.databinding.ItemHabitBinding
 import com.sprill.habits.interfaces.IAdapterCallBack
 

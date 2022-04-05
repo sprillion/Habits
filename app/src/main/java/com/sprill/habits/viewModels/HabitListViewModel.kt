@@ -5,12 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.retrofit.ItemHabit
 import com.sprill.habits.model.HabitsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 
 class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewModel() {
@@ -18,38 +15,58 @@ class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewM
     private val mutableSortedHabits: MutableLiveData<List<ItemHabit>> = MutableLiveData()
     val sortedHabits: LiveData<List<ItemHabit>> = mutableSortedHabits
 
-    var habits: LiveData<List<ItemHabit>> = habitsRepository.getHabitsAll()
+    private val mutableHabits:MutableLiveData<List<ItemHabit>> = MutableLiveData()
+    val habits: LiveData<List<ItemHabit>> = mutableHabits
 
-
-    fun setSortPriority(sortUp: Boolean){
-        viewModelScope.launch {
-            val result =  withContext(Dispatchers.IO){
-                habitsRepository.getHabitsPriority(sortUp)
-            }
-            mutableSortedHabits.postValue(result)
-        }
-
+    init {
+        getHabits()
     }
 
-    fun setSortId(sortUp: Boolean){
+    fun getHabits(){
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                habitsRepository.getHabitsId(sortUp)
-            }
-            mutableSortedHabits.postValue(result)
-        }
-    }
-
-    fun setSearcher(content: CharSequence?){
-        viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                content?.let {
-                    habitsRepository.getSearchedHabits(it)
+            val response = habitsRepository.getHabitsAll()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful){
+                    mutableHabits.postValue(response.body())
+                }
+                else{
+                    Log.d("tttERROR", response.message())
                 }
             }
-            mutableSortedHabits.postValue(result)
         }
     }
+
+//
+//
+//    fun setSortPriority(sortUp: Boolean){
+//        viewModelScope.launch {
+//            val result =  withContext(Dispatchers.IO){
+//                habitsRepository.getHabitsPriority(sortUp)
+//            }
+//            mutableSortedHabits.postValue(result)
+//        }
+//
+//    }
+//
+//    fun setSortId(sortUp: Boolean){
+//        viewModelScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                habitsRepository.getHabitsId(sortUp)
+//            }
+//            mutableSortedHabits.postValue(result)
+//        }
+//    }
+//
+//    fun setSearcher(content: CharSequence?){
+//        viewModelScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                content?.let {
+//                    habitsRepository.getSearchedHabits(it)
+//                }
+//            }
+//            mutableSortedHabits.postValue(result)
+//        }
+//    }
 
     companion object{
         private var viewModel: HabitListViewModel? = null

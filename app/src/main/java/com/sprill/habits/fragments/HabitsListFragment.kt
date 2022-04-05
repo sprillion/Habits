@@ -1,24 +1,20 @@
 package com.sprill.habits.fragments
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.sprill.habits.adapters.HabitsListAdapter
 import com.sprill.habits.MainActivity
 import com.sprill.habits.R
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.retrofit.ItemHabit
 import com.sprill.habits.databinding.FragmentHabitsListBinding
 import com.sprill.habits.factory
 import com.sprill.habits.interfaces.IAdapterCallBack
 import com.sprill.habits.viewModels.HabitListViewModel
-import java.util.ArrayList
 
 class HabitsListFragment : Fragment(), IAdapterCallBack {
 
@@ -47,22 +43,30 @@ class HabitsListFragment : Fragment(), IAdapterCallBack {
         return binding.root
     }
 
+    //@SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun setObservers(){
-        viewModel.habits.observe(activity as LifecycleOwner, Observer {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED){
+//                viewModel.habits.collect{ habits ->
+//                    setAdapter(habits)
+//                }
+//            }
+//        }
+        viewModel.habits.observe(viewLifecycleOwner, Observer {
                 habits ->
             setAdapter(habits)
         })
-        viewModel.sortedHabits.observe(activity as LifecycleOwner, Observer {
-                habits ->
-            setAdapter(habits)
-        })
+//        viewModel.sortedHabits.observe(activity as LifecycleOwner, Observer {
+//                habits ->
+//            setAdapter(habits)
+//        })
     }
 
     private fun setAdapter(habits: List<ItemHabit>){
         binding.recycler.adapter = HabitsListAdapter(habits, typeHabits, this, context)
     }
 
-    override fun onItemClicked(idItem: Int) {
+    override fun onItemClicked(idItem: String) {
         findNavController().navigate(
             R.id.action_typesViewPagerFragment_to_createEditFragment,
             bundleOf(

@@ -1,12 +1,15 @@
 package com.sprill.habits.viewModels
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.retrofit.ItemHabit
 import com.sprill.habits.model.HabitsRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateEditViewModel(private val habitsRepository: HabitsRepository): ViewModel() {
 
@@ -14,30 +17,37 @@ class CreateEditViewModel(private val habitsRepository: HabitsRepository): ViewM
 
     var itemHabit: LiveData<ItemHabit?> = mutableItemHabit
 
-    fun setCurrentItem(idItem: Int){
+    fun setCurrentItem(idItem: String){
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val result = withContext(Dispatchers.IO) {
-                    habitsRepository.getItemHabit(idItem)
+
+            val response = habitsRepository.getItemHabits(idItem)
+
+            withContext(Dispatchers.Main) {
+                response.body()?.let {
+                    mutableItemHabit.postValue(response.body())
                 }
-                mutableItemHabit.postValue(result)
             }
         }
     }
 
     fun sendItemHabit(itemHabit: ItemHabit){
         viewModelScope.launch  {
-            withContext(Dispatchers.IO){
-                habitsRepository.sendItemHabit(itemHabit)
-            }
-        }
-    }
-
-    fun deleteItem(){
-        viewModelScope.launch  {
-            withContext(Dispatchers.IO){
-                itemHabit.value?.let { habitsRepository.deleteItemHabit(it) }
-            }
+            habitsRepository.sendItemHabit(itemHabit)
+//            val response = habitsRepository.sendItemHabit(itemHabit)
+//
+//            withContext(Dispatchers.Main){
+//
+//            }
         }
     }
 }
+
+
+//
+//    fun deleteItem(){
+//        viewModelScope.launch  {
+//            withContext(Dispatchers.IO){
+//                itemHabit.value?.let { habitsRepository.deleteItemHabit(it) }
+//            }
+//        }
+//    }

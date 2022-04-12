@@ -18,6 +18,14 @@
         android:paddingBottom="40dp"
         >
 
+        <Button
+            android:id="@+id/buttonDone"
+            android:layout_width="232dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="@string/done_word_create_edit_fragment" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -115,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/count_create_edit_fragment"
                 android:maxLength="20"
-                android:inputType="text"
+                android:inputType="number"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -134,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/period_create_edit_fragment"
                 android:maxLength="20"
-                android:inputType="text"
+                android:inputType="number"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>

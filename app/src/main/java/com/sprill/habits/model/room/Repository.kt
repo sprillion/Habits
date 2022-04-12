@@ -1,10 +1,7 @@
-package com.sprill.habits
+package com.sprill.habits.model.room
 
 import android.content.Context
 import androidx.room.Room
-import com.sprill.habits.model.HabitsRepository
-import com.sprill.habits.model.room.AppDatabase
-import com.sprill.habits.model.room.RoomHabitsRepository
 
 object Repository {
 
@@ -20,11 +17,10 @@ object Repository {
             AppDatabase::class.java,
             "Database"
         )
-            //.allowMainThreadQueries()
             .build()
     }
 
-    val habitsRepository: HabitsRepository by lazy {
+    val habitsRepository: IRoomHabitsRepository by lazy {
         RoomHabitsRepository(database.getItemHabitDao())
     }
 }

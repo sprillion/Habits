@@ -5,46 +5,93 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sprill.habits.model.room.entities.ItemHabit
-import com.sprill.habits.model.HabitsRepository
+import com.sprill.habits.model.retrofit.IRetrofitHabitsRepository
+import com.sprill.habits.model.retrofit.models.ItemHabit
+import com.sprill.habits.model.room.IRoomHabitsRepository
+import com.sprill.habits.model.room.TypeSort
+import com.sprill.habits.model.room.entities.ItemHabitEntity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewModel() {
+class HabitListViewModel(
+    private val localRepository: IRoomHabitsRepository,
+    private val httpRepository: IRetrofitHabitsRepository
+    ) : ViewModel() {
 
-    private val mutableSortedHabits: MutableLiveData<List<ItemHabit>> = MutableLiveData()
-    val sortedHabits: LiveData<List<ItemHabit>> = mutableSortedHabits
+    private val mutableSortedHabits: MutableLiveData<List<ItemHabitEntity>> = MutableLiveData()
+    val sortedHabits: LiveData<List<ItemHabitEntity>> = mutableSortedHabits
 
-    var habits: LiveData<List<ItemHabit>> = habitsRepository.getHabitsAll()
+    //private var mutableHabits: MutableStateFlow<List<ItemHabitEntity>> = MutableStateFlow(listOf())
+
+    val habits: Flow<List<ItemHabitEntity>> = localRepository.getHabitsAll()
+
+    //var habits: LiveData<List<ItemHabitEntity>> = getHabitsAll()
+
+    init {
+        getHabitsAll()
+    }
 
 
-    fun setSortPriority(sortUp: Boolean){
+   // private fun getHabitsAll(): Flow<List<ItemHabitEntity>>{
+    private fun getHabitsAll(){
         viewModelScope.launch {
-            val result =  withContext(Dispatchers.IO){
-                habitsRepository.getHabitsPriority(sortUp)
+            val result =  httpRepository.getHabitsAll().body()
+            withContext(Dispatchers.Main){
+                val habitsEntities = result?.map {
+                        itemHabit -> ItemHabitEntity.converter(itemHabit)
+                }
+                withContext(Dispatchers.IO){
+                    habitsEntities?.let {
+                        localRepository.fillHabits(it)
+                        localRepository.getHabitsAll().collect()
+                    }
+                }
             }
-            mutableSortedHabits.postValue(result)
         }
 
     }
 
-    fun setSortId(sortUp: Boolean){
+    fun setSortedHabits(typeSort: TypeSort, sortUp: Boolean){
         viewModelScope.launch {
+            Log.d("ttt", "hmm")
             val result = withContext(Dispatchers.IO) {
-                habitsRepository.getHabitsId(sortUp)
+                localRepository.getSortedHabits(typeSort, sortUp)
             }
             mutableSortedHabits.postValue(result)
         }
     }
+//
+//    fun setSortPriority(sortUp: Boolean){
+//        viewModelScope.launch {
+//            val result =  withContext(Dispatchers.IO){
+//                localRepository.getHabitsPriority(sortUp)
+//            }
+//            mutableSortedHabits.postValue(result)
+//        }
+//
+//    }
+//
+//    fun setSortId(sortUp: Boolean){
+//        viewModelScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                localRepository.getSortedHabits(TypeSort.DATE, sortUp)
+//            }
+//            mutableSortedHabits.postValue(result)
+//        }
+//    }
 
     fun setSearcher(content: CharSequence?){
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 content?.let {
-                    habitsRepository.getSearchedHabits(it)
+                    localRepository.getSearchedHabits(it)
                 }
             }
             mutableSortedHabits.postValue(result)
@@ -54,9 +101,12 @@ class HabitListViewModel(private val habitsRepository: HabitsRepository) : ViewM
     companion object{
         private var viewModel: HabitListViewModel? = null
 
-        fun getHabitListViewModel(habitsRepository: HabitsRepository): HabitListViewModel{
+        fun getHabitListViewModel(
+            localRepository: IRoomHabitsRepository,
+            httpRepository: IRetrofitHabitsRepository
+        ): HabitListViewModel{
             if (viewModel == null)
-                viewModel = HabitListViewModel(habitsRepository)
+                viewModel = HabitListViewModel(localRepository, httpRepository)
             return viewModel!!
         }
     }

@@ -15,10 +15,10 @@
     <string name="good_radio_button">Полезная</string>
     <string name="bad_radio_button">Вредная</string>
 
-    <string name="priority_word">Приоритет: </string>
-    <string name="type_word">Тип: </string>
-    <string name="type_havent">не выбран</string>
-    <string name="period_word">Периодичность: </string>
+    <string name="priority_word">Приоритет:\t</string>
+    <string name="period_word">Периодичность:\t</string>
+    <string name="done_word">Последние выполнение:\t</string>
+    <string name="done_in_progress">В процессе</string>
 
     <!-- Создание/редактирование привычек. Заполнение полей -->
     <string name="name_create_edit_fragment">Название</string>
@@ -30,6 +30,7 @@
     <string name="color_word_create_edit_fragment">Цвет</string>
     <string name="save_word_create_edit_fragment">Сохранить</string>
     <string name="delete_word_create_edit_fragment">Удалить привычку</string>
+    <string name="done_word_create_edit_fragment">Отметить выполнение</string>
 
     <!-- Меню -->
     <string name="habits_list_menu">Список привычек</string>
@@ -41,7 +42,7 @@
     <string name="bad_type">Вредные</string>
 
     <!-- About App -->
-    <string name="about_app_text">Это приложение было создано Матюхиным Сергеем!\n\nСейчас реализовано ДЗ 5</string>
+    <string name="about_app_text">Это приложение было создано Матюхиным Сергеем!\n\nСейчас реализовано ДЗ 8</string>
 
 
     <!-- Bottom Sheet -->

@@ -2,59 +2,77 @@ package com.sprill.habits.model.room
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.sprill.habits.model.room.entities.ItemHabit
-import com.sprill.habits.model.HabitsRepository
-import kotlinx.coroutines.delay
+import com.sprill.habits.model.room.entities.ItemHabitEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 
 class RoomHabitsRepository(
     private val habitsDao: HabitsDao
-): HabitsRepository {
+): IRoomHabitsRepository {
 
-    override fun getHabitsAll(): LiveData<List<ItemHabit>> = habitsDao.getHabitsAll()
+    override fun getHabitsAll(): Flow<List<ItemHabitEntity>> = habitsDao.getHabitsAll()
 
-    override suspend fun sendItemHabit(itemHabit: ItemHabit) {
-        if (habitsDao.updateItemHabit(itemHabit) == NO_ITEM)
-            habitsDao.createItemHabit(itemHabit)
+    override suspend fun sendItemHabit(itemHabitEntity: ItemHabitEntity) {
+            habitsDao.sendItemHabit(itemHabitEntity)
     }
 
-    override suspend fun deleteItemHabit(itemHabit: ItemHabit) {
-        habitsDao.deleteItemHabit(itemHabit)
+    override suspend fun fillHabits(habitEntities: List<ItemHabitEntity>) {
+        habitsDao.fillHabits(habitEntities)
     }
 
-    override suspend fun getItemHabit(idItem: Int) = habitsDao.getItemHabit(idItem)
+    override suspend fun deleteItemHabit(itemHabitEntity: ItemHabitEntity) {
+        habitsDao.deleteItemHabit(itemHabitEntity)
+    }
 
-    override suspend fun getHabitsId(sortUp: Boolean): List<ItemHabit> =
-        if (sortUp)
-            habitsDao.getHabitsForSort()
-        else
-            habitsDao.getHabitsForSort().asReversed()
+    override suspend fun getItemHabit(idItem: String) = habitsDao.getItemHabit(idItem)
 
+//    override suspend fun getHabitsDate(sortUp: Boolean): List<ItemHabitEntity> =
+//        if (sortUp)
+//            habitsDao.getHabitsForSort()
+//        else
+//            habitsDao.getHabitsForSort().asReversed()
 
-    override suspend fun getHabitsPriority(sortUp:Boolean): List<ItemHabit>{
-        val sortedHabits = habitsDao.getHabitsForSort() as MutableList
-
+    override suspend fun getSortedHabits(
+        typeSort: TypeSort,
+        sortUp: Boolean
+    ): List<ItemHabitEntity> {
+        var sortedHabits: MutableList<ItemHabitEntity> = mutableListOf()
+        getHabitsAll().collect{
+            sortedHabits = it as MutableList<ItemHabitEntity>
+        }
         sortedHabits.apply {
             if (sortUp)
-                sortByDescending {
-                    it.priority
+                sortByDescending { item->
+                    when(typeSort){
+                        TypeSort.DATE -> return@sortByDescending item.date
+                        TypeSort.PRIORITY -> return@sortByDescending item.priority.toLong()
+                    }
                 }
             else
-                sortBy{
-                    it.priority
+                sortBy{ item->
+                    when(typeSort){
+                        TypeSort.DATE -> return@sortBy item.date
+                        TypeSort.PRIORITY -> return@sortBy item.priority.toLong()
+                    }
                 }
         }
         return sortedHabits
     }
 
-    override suspend fun getSearchedHabits(content: CharSequence):ArrayList<ItemHabit>{
-        val searchHabits = arrayListOf<ItemHabit>()
-        habitsDao.getHabitsForSort().forEach{
-            if (it.name.contains(content))
-                searchHabits.add(it)
+    override suspend fun getSearchedHabits(content: CharSequence):List<ItemHabitEntity>{
+        val searchHabits:MutableList<ItemHabitEntity> = mutableListOf()
+        getHabitsAll().collect{ habits ->
+            habits.forEach{ item ->
+                if (item.name.contains(content))
+                    searchHabits.add(item)
+            }
         }
         return searchHabits
     }
 
+    override suspend fun setDoneDate(doneDates: String, uid: String) {
+        habitsDao.setDoneDate(doneDates, uid)
+    }
 
     companion object{
         private const val NO_ITEM = 0

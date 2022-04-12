@@ -2,28 +2,28 @@ package com.sprill.habits.model.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.retrofit.models.HabitDoneTuple
+import com.sprill.habits.model.room.entities.ItemHabitEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitsDao {
 
     @Query("SELECT * FROM habits")
-    fun getHabitsAll(): LiveData<List<ItemHabit>>
+    fun getHabitsAll(): Flow<List<ItemHabitEntity>>
 
-    @Query("SELECT * FROM habits WHERE id = :idItem")
-    suspend fun getItemHabit(idItem: Int): ItemHabit
+    @Query("SELECT * FROM habits WHERE uid = :idItem")
+    suspend fun getItemHabit(idItem: String): ItemHabitEntity
 
-    @Update(entity = ItemHabit::class)
-    suspend fun updateItemHabit(itemHabit: ItemHabit): Int
+    @Insert(entity = ItemHabitEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun sendItemHabit(itemHabitEntityEntity: ItemHabitEntity)
 
-    @Insert(entity = ItemHabit::class)
-    suspend fun createItemHabit(itemHabitEntity: ItemHabit)
+    @Insert(entity = ItemHabitEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun fillHabits(habitEntities: List<ItemHabitEntity>)
 
-    @Delete(entity = ItemHabit::class)
-    suspend fun deleteItemHabit(itemHabit: ItemHabit)
+    @Delete(entity = ItemHabitEntity::class)
+    suspend fun deleteItemHabit(itemHabitEntity: ItemHabitEntity)
 
-    @Query("SELECT * FROM habits")
-    suspend fun getHabitsForSort(): List<ItemHabit>
-
-
+    @Query("UPDATE habits SET doneDates = :doneDates WHERE uid = :uid")
+    suspend fun setDoneDate(doneDates: String, uid: String)
 }

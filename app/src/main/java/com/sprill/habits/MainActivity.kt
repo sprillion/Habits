@@ -4,19 +4,16 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
 import com.sprill.habits.databinding.ActivityMainBinding
-import com.sprill.habits.viewModels.HabitListViewModel
+import com.sprill.habits.model.retrofit.HttpRepository
+import com.sprill.habits.model.room.Repository
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
 
@@ -28,7 +25,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         const val BUNDLE_KEY_ID = "ID"
         const val BUNDLE_KEY_CREATE_EDIT_SCREEN_NAME = "labelType"
         const val BUNDLE_KEY_TYPE = "TYPE"
-        const val BUNDLE_KEY_ID_NULL = -1
+        const val BUNDLE_KEY_ID_NULL = ""
         const val KEY_TYPE_GOOD = 0
         const val KEY_TYPE_BAD = 1
     }
@@ -38,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Repository.init(applicationContext)
-
+        HttpRepository.configureRetrofit()
         binding.navigation.setNavigationItemSelectedListener(this)
         setNavigationMenu()
         navController = binding.fragmentContainer.getFragment<NavHostFragment>().navController

@@ -9,10 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sprill.habits.MainActivity
@@ -20,7 +17,7 @@ import com.sprill.habits.R
 import com.sprill.habits.adapters.ViewPagerAdapter
 import com.sprill.habits.databinding.FragmentTypesViewPagerBinding
 import com.sprill.habits.factory
-import com.sprill.habits.model.room.entities.ItemHabit
+import com.sprill.habits.model.room.TypeSort
 import com.sprill.habits.viewModels.HabitListViewModel
 
 class TypesViewPagerFragment : Fragment() {
@@ -48,19 +45,19 @@ class TypesViewPagerFragment : Fragment() {
             bottomSheetLayout.apply {
 
                 filterIdDown.setOnClickListener{
-                    viewModel.setSortId(false)
+                    viewModel.setSortedHabits( TypeSort.DATE,false)
                     checkedArrow(it)
                 }
                 filterIdUp.setOnClickListener{
-                    viewModel.setSortId(true)
+                    viewModel.setSortedHabits(TypeSort.DATE,true)
                     checkedArrow(it)
                 }
                 filterPriorityDown.setOnClickListener{
-                    viewModel.setSortPriority(false)
+                    viewModel.setSortedHabits(TypeSort.PRIORITY, false)
                     checkedArrow(it)
                 }
                 filterPriorityUp.setOnClickListener{
-                    viewModel.setSortPriority(true)
+                    viewModel.setSortedHabits(TypeSort.PRIORITY,true)
                     checkedArrow(it)
                 }
             }
